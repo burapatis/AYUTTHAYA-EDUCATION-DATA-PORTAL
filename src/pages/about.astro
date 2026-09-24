@@ -5,6 +5,7 @@ import PageHeader from '../components/dashboard/PageHeader.astro';
 import SectionCard from '../components/dashboard/SectionCard.astro';
 import NavigationCard from '../components/dashboard/NavigationCard.astro';
 import Notice from '../components/data-display/Notice.astro';
+import ExternalResourceCard from '../components/data-display/ExternalResourceCard.astro';
 ---
 
 <DashboardLayout
@@ -43,6 +44,30 @@ import Notice from '../components/data-display/Notice.astro';
     </div>
 
     <Notice tone="info" title="สถานะของเว็บไซต์"><p>เว็บไซต์นี้เป็นโครงการที่จัดทำโดยผู้วิจัยอิสระ ไม่ใช่เว็บไซต์ทางการของสำนักงานสถิติจังหวัดพระนครศรีอยุธยาหรือสำนักงานสถิติแห่งชาติ การระบุชื่อหน่วยงานมีวัตถุประสงค์เพื่อแสดงแหล่งที่มาของข้อมูลเท่านั้น</p></Notice>
+
+    <SectionCard title="เว็บไซต์ข้อมูลและแหล่งเรียนรู้ที่เกี่ยวข้อง" description="แหล่งข้อมูลเพิ่มเติมเกี่ยวกับการศึกษาและการเรียนรู้ของจังหวัดพระนครศรีอยุธยา ลิงก์ภายนอกจะเปิดในแท็บใหม่">
+      <div class="related-resource-grid" id="related-resources">
+        <ExternalResourceCard
+          href="https://ayeduplan1.thamdee.com"
+          title="AY Education Plan 1"
+          domain="ayeduplan1.thamdee.com"
+          description="เว็บไซต์ข้อมูลการศึกษาและแหล่งเรียนรู้ที่เกี่ยวข้องของจังหวัดพระนครศรีอยุธยา"
+        />
+        <ExternalResourceCard
+          href="https://ayeduplan2.thamdee.com"
+          title="AY Education Plan 2"
+          domain="ayeduplan2.thamdee.com"
+          description="เว็บไซต์ข้อมูลการศึกษาและแหล่งเรียนรู้ที่เกี่ยวข้องของจังหวัดพระนครศรีอยุธยา"
+        />
+        <ExternalResourceCard
+          href="https://sgd.thamdee.com"
+          title="SGD"
+          domain="sgd.thamdee.com"
+          description="เว็บไซต์ข้อมูลการศึกษาและแหล่งเรียนรู้ที่เกี่ยวข้องของจังหวัดพระนครศรีอยุธยา"
+        />
+      </div>
+      <p class="related-resource-note">เว็บไซต์ภายนอกมีผู้ดูแลและนโยบายการเผยแพร่ข้อมูลแยกจากศูนย์ข้อมูลแห่งนี้ โปรดตรวจสอบแหล่งที่มาและวันที่ปรับปรุงบนเว็บไซต์ปลายทางก่อนนำข้อมูลไปใช้อ้างอิง</p>
+    </SectionCard>
 
     <SectionCard title="แหล่งข้อมูลอ้างอิงหลัก" description="เอกสารต้นทางที่ใช้ประกอบการจัดทำตัวชี้วัด ตาราง และกราฟในเว็บไซต์">
       <div class="reference-block">
@@ -150,6 +175,19 @@ import Notice from '../components/data-display/Notice.astro';
     line-height: 1.75;
   }
 
+  .related-resource-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+    scroll-margin-top: calc(var(--header-height) + var(--space-5));
+  }
+
+  .related-resource-note {
+    margin: var(--space-4) 0 0;
+    color: var(--color-slate-500);
+    font-size: var(--text-xs);
+  }
+
   .reference-block dl {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -193,6 +231,12 @@ import Notice from '../components/data-display/Notice.astro';
     }
 
     .reference-block dl {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .related-resource-grid {
       grid-template-columns: minmax(0, 1fr);
     }
   }
