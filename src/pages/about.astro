@@ -1,0 +1,27 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import Breadcrumbs from '../components/navigation/Breadcrumbs.astro';
+import PageHeader from '../components/dashboard/PageHeader.astro';
+import SectionCard from '../components/dashboard/SectionCard.astro';
+import NavigationCard from '../components/dashboard/NavigationCard.astro';
+---
+
+<DashboardLayout title="เกี่ยวกับโครงการ · ศูนย์ข้อมูลการศึกษาอยุธยา" activePath="/about">
+  <Breadcrumbs items={[{ label: 'ศูนย์ข้อมูล', href: '/' }, { label: 'เกี่ยวกับโครงการ' }]} />
+  <div class="page-stack">
+    <PageHeader eyebrow="About the portal" title="เกี่ยวกับศูนย์ข้อมูลการศึกษา" description="พื้นที่สาธารณะสำหรับเปลี่ยนสถิติการศึกษาให้เป็นข้อมูลที่เข้าใจง่าย ตรวจสอบได้ และนำไปใช้ตัดสินใจได้" status="ต้นแบบพร้อมใช้งาน" />
+    <div class="narrative-grid">
+      <article class="narrative-card"><span class="narrative-card__index">01</span><h2>ความน่าเชื่อถือ</h2><p>แสดงที่มา รอบเวลา หน่วย และข้อจำกัดควบคู่กับทุกมุมมองสำคัญ</p></article>
+      <article class="narrative-card"><span class="narrative-card__index">02</span><h2>การเข้าถึง</h2><p>ออกแบบให้ใช้งานได้ทั้งโทรศัพท์และคอมพิวเตอร์ พร้อมตารางทางเลือกสำหรับกราฟ</p></article>
+      <article class="narrative-card"><span class="narrative-card__index">03</span><h2>การนำไปใช้ต่อ</h2><p>โครงสร้างข้อมูลจะรองรับการดาวน์โหลด การอ้างอิง และการอัปเดตเป็นรอบ</p></article>
+    </div>
+    <SectionCard title="ผู้ใช้งานที่ออกแบบมาเพื่อรองรับ" description="ข้อมูลเดียวกัน แต่ตอบโจทย์การตัดสินใจต่างระดับ">
+      <ul class="plain-list"><li>ผู้บริหารและนักวางแผน ใช้ติดตามภาพรวมและความแตกต่างเชิงพื้นที่</li><li>สถานศึกษาและครู ใช้เปรียบเทียบโครงสร้างผู้เรียนกับทรัพยากร</li><li>นักวิจัยและสื่อ ใช้ตรวจสอบแหล่งที่มาและนำข้อมูลไปวิเคราะห์ต่อ</li><li>ประชาชนและผู้ปกครอง ใช้ทำความเข้าใจระบบการศึกษาของจังหวัด</li></ul>
+    </SectionCard>
+    <div class="navigation-grid">
+      <NavigationCard href="/" title="กลับสู่ภาพรวม" description="ดูตัวชี้วัดหลักและประเด็นสำคัญของจังหวัด" icon="trend" />
+      <NavigationCard href="/methodology" title="อ่านวิธีการ" description="ตรวจสอบนิยาม การคำนวณ และข้อจำกัดของข้อมูล" icon="database" />
+      <NavigationCard href="/data" title="ดูบัญชีข้อมูล" description="สำรวจขอบเขต รอบเวลา และสถานะชุดข้อมูล" icon="database" />
+    </div>
+  </div>
+</DashboardLayout>

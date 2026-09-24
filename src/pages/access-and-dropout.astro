@@ -1,0 +1,43 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import Breadcrumbs from '../components/navigation/Breadcrumbs.astro';
+import PageHeader from '../components/dashboard/PageHeader.astro';
+import KpiCard from '../components/data-display/KpiCard.astro';
+import ChartPanel from '../components/dashboard/ChartPanel.astro';
+import SectionCard from '../components/dashboard/SectionCard.astro';
+import DataTable from '../components/data-display/DataTable.astro';
+import Notice from '../components/data-display/Notice.astro';
+import SourceNote from '../components/data-display/SourceNote.astro';
+import EChart from '../components/charts/EChart';
+import { barOption, lineOption } from '../lib/chart-options';
+import { dropoutCauses, dropoutTrend, formatNumber, sourceLabel } from '../data/fixtures';
+
+const columns = [{ key: 'cause', label: 'สาเหตุที่รายงาน' }, { key: 'students', label: 'นักเรียน', align: 'right' as const }, { key: 'share', label: 'สัดส่วน', align: 'right' as const }];
+const rows = dropoutCauses.map((item) => ({ cause: item.label, students: formatNumber(item.value), share: `${(item.value / 110 * 100).toFixed(1)}%` }));
+---
+
+<DashboardLayout title="การเข้าถึงและออกกลางคัน · ศูนย์ข้อมูลการศึกษาอยุธยา" activePath="/access-and-dropout">
+  <Breadcrumbs items={[{ label: 'ศูนย์ข้อมูล', href: '/' }, { label: 'การเข้าถึงและออกกลางคัน' }]} />
+  <div class="page-stack">
+    <PageHeader eyebrow="Participation and retention" title="การเข้าถึงและออกกลางคัน" description="ติดตามสัญญาณการหลุดออกจากระบบ เพื่อช่วยกำหนดมาตรการเชิงป้องกัน" period="ปีการศึกษา 2558–2567" status="ข้อมูลจากรายงานทางการ" />
+    <section aria-label="ตัวชี้วัดการออกกลางคัน" class="kpi-grid">
+      <KpiCard label="ออกกลางคัน ปี 2567" value="110" unit="คน" detail="รวมทุกสาเหตุที่รายงาน" icon="trend" featured />
+      <KpiCard label="เปลี่ยนแปลงจากปีก่อน" value="−28.6%" detail="ลดลงจาก 154 คน" trend="ลดลง 44 คน" trendDirection="up" icon="trend" />
+      <KpiCard label="สูงสุดในช่วงข้อมูล" value="240" unit="คน" detail="ปีการศึกษา 2565" icon="students" />
+      <KpiCard label="อพยพตามครอบครัว" value="77" unit="คน" detail="70% ของกรณีทั้งหมด" icon="districts" />
+    </section>
+    <Notice tone="warning" title="ข้อสังเกตด้านคุณภาพข้อมูล"><p>หัวตาราง 3.12 ในเอกสารต้นทางไม่ระบุปีการศึกษาอย่างชัดเจน หน้านี้แสดงค่าตามรายงานและคงข้อสังเกตไว้เพื่อการตรวจสอบย้อนกลับ</p></Notice>
+    <div class="content-grid">
+      <ChartPanel title="แนวโน้มการออกกลางคัน" description="จำนวนกรณีที่รายงานในแต่ละปีการศึกษา" height={360}>
+        <EChart client:visible option={lineOption(dropoutTrend.map((item) => item.year), dropoutTrend.map((item) => item.value), 'นักเรียนออกกลางคัน')} label="กราฟแนวโน้มจำนวนนักเรียนออกกลางคัน" />
+      </ChartPanel>
+      <ChartPanel title="สาเหตุการออกกลางคัน" description="จำนวนกรณีตามสาเหตุในตารางล่าสุด" height={360}>
+        <EChart client:visible option={barOption(dropoutCauses.map((item) => item.label), dropoutCauses.map((item) => item.value), 'นักเรียน', { horizontal: true, color: '#bd8422', gridLeft: 120 })} label="กราฟสาเหตุการออกกลางคัน" />
+      </ChartPanel>
+    </div>
+    <SectionCard title="รายละเอียดสาเหตุที่รายงาน" description="สัดส่วนคำนวณเทียบกับยอดรวม 110 คน">
+      <DataTable caption="สาเหตุการออกกลางคัน" columns={columns} rows={rows} />
+    </SectionCard>
+    <SourceNote source={sourceLabel} period="ปีการศึกษา 2558–2567" table="ตาราง 3.11–3.12" note="ตัวเลขสะท้อนการบันทึกในรายงาน ไม่ควรตีความเป็นอัตราการออกกลางคันโดยไม่มีฐานจำนวนนักเรียน" />
+  </div>
+</DashboardLayout>

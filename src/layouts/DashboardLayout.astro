@@ -1,0 +1,58 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import AppHeader from '../components/navigation/AppHeader.astro';
+import SideNavigation from '../components/navigation/SideNavigation.astro';
+import AppFooter from '../components/navigation/AppFooter.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  activePath?: string;
+}
+
+const { title, description, activePath = '/' } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <AppHeader />
+  <div class="app-shell">
+    <SideNavigation activePath={activePath} />
+    <main id="main-content" tabindex="-1">
+      <div class="main-inner">
+        <slot />
+        <AppFooter />
+      </div>
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .app-shell {
+    display: flex;
+    width: min(100%, var(--content-max));
+    min-height: calc(100vh - var(--header-height));
+    margin-inline: auto;
+  }
+
+  main {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .main-inner {
+    width: 100%;
+    padding: var(--space-8) var(--space-8) var(--space-6);
+  }
+
+  @media (max-width: 900px) {
+    .main-inner {
+      padding-inline: var(--space-5);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .main-inner {
+      padding: var(--space-6) var(--space-4);
+    }
+  }
+</style>

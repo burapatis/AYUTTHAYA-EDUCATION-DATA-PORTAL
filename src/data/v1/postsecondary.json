@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0.0",
+  "datasetId": "postsecondary",
+  "titleTh": "อาชีวศึกษาและอุดมศึกษา",
+  "period": { "type": "academic_year", "buddhistYear": 2567, "gregorianYear": 2024, "labelTh": "ปีการศึกษา 2567 (2024)" },
+  "sourceTables": ["3.13", "3.14"],
+  "units": { "institutions": "แห่ง", "lecturers": "คน", "students": "คน" },
+  "records": [
+    { "id": "vocational", "labelTh": "อาชีวศึกษา", "institutions": 14, "lecturers": 574, "students": 10922, "maleStudents": 7091, "femaleStudents": 3831 },
+    { "id": "higher", "labelTh": "อุดมศึกษา", "institutions": 6, "lecturers": 973, "students": 14364, "maleStudents": 7679, "femaleStudents": 6685 }
+  ]
+}

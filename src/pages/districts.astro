@@ -1,0 +1,47 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import Breadcrumbs from '../components/navigation/Breadcrumbs.astro';
+import PageHeader from '../components/dashboard/PageHeader.astro';
+import KpiCard from '../components/data-display/KpiCard.astro';
+import ChartPanel from '../components/dashboard/ChartPanel.astro';
+import SectionCard from '../components/dashboard/SectionCard.astro';
+import DataTable from '../components/data-display/DataTable.astro';
+import SourceNote from '../components/data-display/SourceNote.astro';
+import EChart from '../components/charts/EChart';
+import { barOption, groupedBarOption } from '../lib/chart-options';
+import { academicPeriod, districtRows, formatNumber, sourceLabel } from '../data/fixtures';
+
+const sorted = [...districtRows].sort((a, b) => b.students - a.students);
+const columns = [
+  { key: 'code', label: 'รหัส' }, { key: 'district', label: 'อำเภอ' },
+  { key: 'schools', label: 'สถานศึกษา', align: 'right' as const }, { key: 'classrooms', label: 'ห้องเรียน', align: 'right' as const },
+  { key: 'teachers', label: 'ครู', align: 'right' as const }, { key: 'students', label: 'นักเรียน', align: 'right' as const },
+  { key: 'perClass', label: 'นักเรียน/ห้อง', align: 'right' as const }, { key: 'perTeacher', label: 'นักเรียน/ครู', align: 'right' as const },
+];
+const rows = districtRows.map((row) => ({ code: row.id, district: row.name, schools: formatNumber(row.schools), classrooms: formatNumber(row.classrooms), teachers: formatNumber(row.teachers), students: formatNumber(row.students), perClass: row.studentsPerClassroom, perTeacher: row.studentsPerTeacher }));
+---
+
+<DashboardLayout title="เปรียบเทียบรายอำเภอ · ศูนย์ข้อมูลการศึกษาอยุธยา" activePath="/districts">
+  <Breadcrumbs items={[{ label: 'ศูนย์ข้อมูล', href: '/' }, { label: 'เปรียบเทียบรายอำเภอ' }]} />
+  <div class="page-stack">
+    <PageHeader eyebrow="District comparison" title="เปรียบเทียบการศึกษารายอำเภอ" description="เห็นความแตกต่างของขนาดระบบและการจัดสรรทรัพยากรในทั้ง 16 อำเภอ" period={academicPeriod} status="ข้อมูลจากรายงานทางการ" />
+    <section aria-label="ตัวชี้วัดรายอำเภอ" class="kpi-grid">
+      <KpiCard label="อำเภอในชุดข้อมูล" value="16" unit="อำเภอ" detail="ครอบคลุมทั้งจังหวัด" icon="districts" featured />
+      <KpiCard label="นักเรียนมากที่สุด" value="33,237" unit="คน" detail="พระนครศรีอยุธยา" icon="students" />
+      <KpiCard label="นักเรียนต่อห้องสูงสุด" value="28 : 1" detail="พระนครศรีอยุธยา" icon="school" />
+      <KpiCard label="นักเรียนน้อยที่สุด" value="708" unit="คน" detail="บ้านแพรก" icon="students" />
+    </section>
+    <div class="content-grid">
+      <ChartPanel title="จำนวนนักเรียนรายอำเภอ" description="เรียงจากมากไปน้อย" height={560}>
+        <EChart client:visible height={540} option={barOption(sorted.map((item) => item.name), sorted.map((item) => item.students), 'นักเรียน', { horizontal: true, gridLeft: 108 })} label="กราฟเปรียบเทียบจำนวนนักเรียน 16 อำเภอ" />
+      </ChartPanel>
+      <ChartPanel title="อัตราส่วนนักเรียนต่อทรัพยากร" description="จำนวนคนต่อหนึ่งห้องเรียนและต่อครูหนึ่งคน" height={560}>
+        <EChart client:visible height={540} option={groupedBarOption(districtRows.map((item) => item.name), [{ name: 'นักเรียนต่อห้อง', data: districtRows.map((item) => item.studentsPerClassroom) }, { name: 'นักเรียนต่อครู', data: districtRows.map((item) => item.studentsPerTeacher) }], 'คน')} label="กราฟอัตราส่วนนักเรียนต่อห้องเรียนและครูรายอำเภอ" />
+      </ChartPanel>
+    </div>
+    <SectionCard title="ตารางข้อมูลครบทั้ง 16 อำเภอ" description="ตัวเลขอัตราส่วนปัดเป็นจำนวนเต็มตามรายงานต้นทาง">
+      <DataTable caption="สถิติการศึกษาจำแนกรายอำเภอ" columns={columns} rows={rows} compact />
+    </SectionCard>
+    <SourceNote source={sourceLabel} period={academicPeriod} table="ตาราง 3.2" note="ใช้รหัสอำเภอมาตรฐานเพื่อเตรียมเชื่อมโยงชุดข้อมูลในขั้นถัดไป" />
+  </div>
+</DashboardLayout>

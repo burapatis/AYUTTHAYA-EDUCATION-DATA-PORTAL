@@ -1,0 +1,42 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import Breadcrumbs from '../components/navigation/Breadcrumbs.astro';
+import PageHeader from '../components/dashboard/PageHeader.astro';
+import KpiCard from '../components/data-display/KpiCard.astro';
+import ChartPanel from '../components/dashboard/ChartPanel.astro';
+import SectionCard from '../components/dashboard/SectionCard.astro';
+import DataTable from '../components/data-display/DataTable.astro';
+import SourceNote from '../components/data-display/SourceNote.astro';
+import EChart from '../components/charts/EChart';
+import { barOption, groupedBarOption } from '../lib/chart-options';
+import { academicPeriod, formatNumber, postsecondary, sourceLabel } from '../data/fixtures';
+
+const totals = postsecondary.reduce((acc, item) => ({ institutions: acc.institutions + item.institutions, lecturers: acc.lecturers + item.lecturers, students: acc.students + item.students }), { institutions: 0, lecturers: 0, students: 0 });
+const columns = [{ key: 'system', label: 'ระบบการศึกษา' }, { key: 'institutions', label: 'สถานศึกษา', align: 'right' as const }, { key: 'lecturers', label: 'อาจารย์', align: 'right' as const }, { key: 'male', label: 'นักเรียน/นักศึกษาชาย', align: 'right' as const }, { key: 'female', label: 'นักเรียน/นักศึกษาหญิง', align: 'right' as const }, { key: 'students', label: 'รวมผู้เรียน', align: 'right' as const }];
+const rows = postsecondary.map((item) => ({ system: item.label, institutions: formatNumber(item.institutions), lecturers: formatNumber(item.lecturers), male: formatNumber(item.maleStudents), female: formatNumber(item.femaleStudents), students: formatNumber(item.students) }));
+---
+
+<DashboardLayout title="อาชีวะและอุดมศึกษา · ศูนย์ข้อมูลการศึกษาอยุธยา" activePath="/higher-education">
+  <Breadcrumbs items={[{ label: 'ศูนย์ข้อมูล', href: '/' }, { label: 'อาชีวะและอุดมศึกษา' }]} />
+  <div class="page-stack">
+    <PageHeader eyebrow="Postsecondary pathways" title="อาชีวะและอุดมศึกษา" description="ภาพรวมเส้นทางการศึกษาหลังระดับพื้นฐาน ทั้งสถาบัน บุคลากร และผู้เรียน" period={academicPeriod} status="ข้อมูลจากรายงานทางการ" />
+    <section aria-label="ตัวชี้วัดหลังการศึกษาขั้นพื้นฐาน" class="kpi-grid">
+      <KpiCard label="สถาบันทั้งหมด" value={formatNumber(totals.institutions)} unit="แห่ง" detail="อาชีวะ 14 · อุดมศึกษา 6" icon="graduate" featured />
+      <KpiCard label="อาจารย์ทั้งหมด" value={formatNumber(totals.lecturers)} unit="คน" detail="รวมสองระบบ" icon="teachers" />
+      <KpiCard label="ผู้เรียนทั้งหมด" value={formatNumber(totals.students)} unit="คน" detail="อาชีวะและอุดมศึกษา" icon="students" />
+      <KpiCard label="นักศึกษาอุดมศึกษา" value="14,364" unit="คน" detail="56.8% ของผู้เรียนทั้งหมด" icon="graduate" />
+    </section>
+    <div class="content-grid">
+      <ChartPanel title="ผู้เรียนตามระบบการศึกษา" description="เปรียบเทียบจำนวนผู้เรียนอาชีวศึกษาและอุดมศึกษา" height={340}>
+        <EChart client:visible option={barOption(postsecondary.map((item) => item.label), postsecondary.map((item) => item.students), 'ผู้เรียน')} label="กราฟเปรียบเทียบผู้เรียนอาชีวศึกษาและอุดมศึกษา" />
+      </ChartPanel>
+      <ChartPanel title="โครงสร้างผู้เรียนตามเพศ" description="จำนวนชายและหญิงในแต่ละระบบ" height={340}>
+        <EChart client:visible option={groupedBarOption(postsecondary.map((item) => item.label), [{ name: 'ชาย', data: postsecondary.map((item) => item.maleStudents) }, { name: 'หญิง', data: postsecondary.map((item) => item.femaleStudents), color: '#bd8422' }])} label="กราฟผู้เรียนชายหญิงในอาชีวศึกษาและอุดมศึกษา" />
+      </ChartPanel>
+    </div>
+    <SectionCard title="ข้อมูลระบบการศึกษาหลังระดับพื้นฐาน" description="แสดงองค์ประกอบหลักของแต่ละระบบ">
+      <DataTable caption="สถิติอาชีวศึกษาและอุดมศึกษา" columns={columns} rows={rows} />
+    </SectionCard>
+    <SourceNote source={sourceLabel} period={academicPeriod} table="ตาราง 3.13–3.14" note="นิยามผู้เรียนและบุคลากรเป็นไปตามหน่วยงานเจ้าของข้อมูลในรายงาน" />
+  </div>
+</DashboardLayout>

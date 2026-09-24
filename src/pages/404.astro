@@ -1,0 +1,23 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import Breadcrumbs from '../components/navigation/Breadcrumbs.astro';
+import SectionCard from '../components/dashboard/SectionCard.astro';
+import { withBase } from '../lib/site';
+---
+
+<DashboardLayout title="ไม่พบหน้าที่ต้องการ · ศูนย์ข้อมูลการศึกษาอยุธยา">
+  <Breadcrumbs items={[{ label: 'ศูนย์ข้อมูล', href: '/' }, { label: 'ไม่พบหน้า' }]} />
+  <div class="page-stack">
+    <SectionCard>
+      <div class="not-found"><p>404</p><h1>ไม่พบหน้าที่ต้องการ</h1><span>ลิงก์อาจถูกเปลี่ยนแปลง หรือหน้าดังกล่าวยังไม่ได้เผยแพร่</span><a class="section-action" href={withBase('/')}>กลับสู่หน้าภาพรวม</a></div>
+    </SectionCard>
+  </div>
+</DashboardLayout>
+
+<style>
+  .not-found { display:grid; justify-items:center; padding:clamp(3rem,9vw,7rem) var(--space-5); text-align:center; }
+  .not-found p { margin:0; color:var(--color-gold-600); font-size:var(--text-sm); font-weight:800; letter-spacing:.12em; }
+  .not-found h1 { margin:var(--space-3) 0; font-size:var(--text-3xl); }
+  .not-found span { max-width:30rem; color:var(--color-slate-600); }
+  .not-found a { margin-top:var(--space-6); }
+</style>

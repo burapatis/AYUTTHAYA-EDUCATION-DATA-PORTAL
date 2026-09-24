@@ -1,0 +1,232 @@
+---
+import Icon from '../foundation/Icon.astro';
+import { withBase } from '../../lib/site';
+
+interface Props {
+  activePath?: string;
+}
+
+const { activePath = '/' } = Astro.props;
+const items = [
+  { href: '/', label: 'ภาพรวม', icon: 'overview' },
+  { href: '/districts', label: 'เปรียบเทียบรายอำเภอ', icon: 'districts' },
+  { href: '/schools', label: 'โรงเรียนและห้องเรียน', icon: 'school' },
+  { href: '/students', label: 'นักเรียน', icon: 'students' },
+  { href: '/teachers', label: 'ครูและบุคลากร', icon: 'teachers' },
+  { href: '/access-and-dropout', label: 'การเข้าถึงและออกกลางคัน', icon: 'trend' },
+  { href: '/higher-education', label: 'อาชีวะและอุดมศึกษา', icon: 'graduate' },
+  { href: '/lifelong-learning', label: 'การเรียนรู้ตลอดชีวิต', icon: 'learning' },
+  { href: '/data', label: 'ชุดข้อมูลและดาวน์โหลด', icon: 'database' },
+] as const;
+---
+
+<aside class="sidebar" id="portal-sidebar" aria-label="เมนูข้อมูลการศึกษา" data-sidebar>
+  <div class="sidebar__heading">
+    <span>หัวข้อข้อมูล</span>
+    <button type="button" aria-label="ปิดเมนูหลัก" data-sidebar-close><Icon name="close" size={20} /></button>
+  </div>
+  <nav>
+    <ul>
+      {items.map((item) => {
+        const active = activePath === item.href;
+        return (
+          <li>
+            <a href={withBase(item.href)} aria-current={active ? 'page' : undefined} class:list={{ active }}>
+              <Icon name={item.icon} size={19} />
+              <span>{item.label}</span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </nav>
+  <div class="sidebar__trust">
+    <span class="sidebar__trust-mark"><Icon name="check" size={16} /></span>
+    <div>
+      <strong>แหล่งข้อมูลตรวจสอบได้</strong>
+      <p>แสดงปี หน่วย และแหล่งที่มาของทุกตัวชี้วัด</p>
+    </div>
+  </div>
+</aside>
+<button class="sidebar-backdrop" type="button" aria-label="ปิดเมนูหลัก" data-sidebar-backdrop></button>
+
+<script>
+  const sidebar = document.querySelector('[data-sidebar]');
+  const toggle = document.querySelector('[data-sidebar-toggle]');
+  const close = document.querySelector('[data-sidebar-close]');
+  const backdrop = document.querySelector('[data-sidebar-backdrop]');
+
+  const setOpen = (open: boolean) => {
+    sidebar?.classList.toggle('is-open', open);
+    backdrop?.classList.toggle('is-open', open);
+    document.body.classList.toggle('sidebar-open', open);
+    toggle?.setAttribute('aria-expanded', String(open));
+  };
+
+  toggle?.addEventListener('click', () => setOpen(true));
+  close?.addEventListener('click', () => setOpen(false));
+  backdrop?.addEventListener('click', () => setOpen(false));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setOpen(false);
+  });
+</script>
+
+<style>
+  .sidebar {
+    position: sticky;
+    top: var(--header-height);
+    display: flex;
+    flex-direction: column;
+    width: var(--sidebar-width);
+    height: calc(100vh - var(--header-height));
+    padding: var(--space-6) var(--space-4);
+    border-right: 1px solid var(--color-border);
+    background: rgb(248 250 251 / 0.86);
+  }
+
+  .sidebar__heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-3) var(--space-3);
+    color: var(--color-slate-500);
+    font-size: var(--text-xs);
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .sidebar__heading button {
+    display: none;
+    padding: 0.35rem;
+    border: 0;
+    background: transparent;
+    color: var(--color-slate-700);
+  }
+
+  ul {
+    display: grid;
+    gap: 0.2rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 0.68rem var(--space-3);
+    border-radius: var(--radius-md);
+    color: var(--color-slate-700);
+    font-size: var(--text-sm);
+    font-weight: 560;
+    text-decoration: none;
+    transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  a:hover {
+    background: var(--color-slate-100);
+    color: var(--color-navy-900);
+  }
+
+  a.active {
+    position: relative;
+    background: var(--color-blue-100);
+    color: var(--color-navy-900);
+    font-weight: 720;
+  }
+
+  a.active::before {
+    position: absolute;
+    left: 0;
+    width: 3px;
+    height: 1.5rem;
+    border-radius: 99px;
+    background: var(--color-blue-600);
+    content: '';
+  }
+
+  .sidebar__trust {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: auto;
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .sidebar__trust-mark {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--color-green-100);
+    color: var(--color-green-700);
+  }
+
+  .sidebar__trust strong {
+    display: block;
+    color: var(--color-navy-900);
+    font-size: var(--text-xs);
+  }
+
+  .sidebar__trust p {
+    margin: var(--space-1) 0 0;
+    color: var(--color-slate-600);
+    font-size: 0.68rem;
+    line-height: 1.45;
+  }
+
+  .sidebar-backdrop {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .sidebar {
+      position: fixed;
+      z-index: 60;
+      inset: 0 auto 0 0;
+      height: 100vh;
+      transform: translateX(-105%);
+      background: var(--color-surface-subtle);
+      box-shadow: var(--shadow-md);
+      transition: transform 180ms ease;
+    }
+
+    .sidebar.is-open {
+      transform: translateX(0);
+    }
+
+    .sidebar__heading button {
+      display: grid;
+      cursor: pointer;
+    }
+
+    .sidebar-backdrop {
+      position: fixed;
+      z-index: 50;
+      inset: 0;
+      display: block;
+      visibility: hidden;
+      padding: 0;
+      border: 0;
+      opacity: 0;
+      background: rgb(7 26 47 / 0.52);
+      transition: opacity 180ms ease, visibility 180ms ease;
+    }
+
+    .sidebar-backdrop.is-open {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    :global(body.sidebar-open) {
+      overflow: hidden;
+    }
+  }
+</style>

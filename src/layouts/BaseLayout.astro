@@ -1,0 +1,32 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  lang?: string;
+}
+
+const {
+  title,
+  description = 'ศูนย์ข้อมูลและสถิติการศึกษาจังหวัดพระนครศรีอยุธยา',
+  lang = 'th',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0b2542" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href={`data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%230b2542%22/><path d=%22M16 26 32 16l16 10M20 31h24M22 31v14M32 31v14M42 31v14M18 48h28%22 fill=%22none%22 stroke=%22%23d9a33e%22 stroke-width=%224%22 stroke-linecap=%22round%22/></svg>`} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">ข้ามไปยังเนื้อหาหลัก</a>
+    <slot />
+  </body>
+</html>

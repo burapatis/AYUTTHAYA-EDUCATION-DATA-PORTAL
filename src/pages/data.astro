@@ -1,0 +1,51 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import Breadcrumbs from '../components/navigation/Breadcrumbs.astro';
+import PageHeader from '../components/dashboard/PageHeader.astro';
+import SectionCard from '../components/dashboard/SectionCard.astro';
+import DataTable from '../components/data-display/DataTable.astro';
+import Notice from '../components/data-display/Notice.astro';
+import SourceNote from '../components/data-display/SourceNote.astro';
+import Icon from '../components/foundation/Icon.astro';
+import { withBase } from '../lib/site';
+import { catalog, sourceLabel } from '../data/fixtures';
+
+const columns = [{ key: 'dataset', label: 'ชุดข้อมูล' }, { key: 'coverage', label: 'ขอบเขต' }, { key: 'period', label: 'รอบข้อมูล' }, { key: 'tables', label: 'ตารางต้นทาง' }, { key: 'status', label: 'สถานะ' }];
+const rows = catalog.map((item) => ({ dataset: item.name, coverage: item.coverage, period: item.period, tables: item.tables, status: item.status }));
+---
+
+<DashboardLayout title="ชุดข้อมูลและดาวน์โหลด · ศูนย์ข้อมูลการศึกษาอยุธยา" activePath="/data">
+  <Breadcrumbs items={[{ label: 'ศูนย์ข้อมูล', href: '/' }, { label: 'ชุดข้อมูลและดาวน์โหลด' }]} />
+  <div class="page-stack">
+    <PageHeader eyebrow="Open data catalog" title="ชุดข้อมูลและดาวน์โหลด" description="บัญชีข้อมูลพร้อมรอบเวลา ขอบเขต และแหล่งอ้างอิง เพื่อรองรับการนำไปใช้ต่ออย่างรับผิดชอบ" status="บัญชีข้อมูลฉบับเว็บไซต์" />
+    <Notice tone="success" title="พร้อมดาวน์โหลดในรูปแบบ JSON"><p>ชุดข้อมูลเวอร์ชัน 1 ใช้โครงสร้างเดียวกับแดชบอร์ด มีรหัสคงที่ รอบเวลา หน่วย และตารางต้นทางกำกับ</p></Notice>
+    <SectionCard title="บัญชีชุดข้อมูล" description="แต่ละชุดข้อมูลเชื่อมโยงกลับไปยังตารางในรายงานสถิติจังหวัด">
+      <DataTable caption="บัญชีชุดข้อมูลการศึกษาจังหวัดพระนครศรีอยุธยา" columns={columns} rows={rows} />
+    </SectionCard>
+    <SectionCard title="ดาวน์โหลดข้อมูล JSON" description="เลือกไฟล์รายหัวข้อ หรือเริ่มจาก manifest เพื่ออ่านบัญชีและเวอร์ชันทั้งหมด">
+      <div class="download-grid">
+        <a href={withBase('/data/v1/manifest.json')} download><span><Icon name="database" size={20} /></span><div><strong>Data manifest</strong><small>บัญชีชุดข้อมูลและ metadata เวอร์ชัน 1.0.0</small></div><Icon name="download" size={18} /></a>
+        {catalog.map((item) => (
+          <a href={withBase(`/data/v1/${item.path}`)} download><span><Icon name="database" size={20} /></span><div><strong>{item.name}</strong><small>{item.path}</small></div><Icon name="download" size={18} /></a>
+        ))}
+      </div>
+    </SectionCard>
+    <div class="narrative-grid">
+      <article class="narrative-card"><span class="narrative-card__index">01</span><h2>ที่มาโปร่งใส</h2><p>ทุกระเบียนจะมีแหล่งข้อมูล ตารางต้นทาง รอบเวลา และวันที่ปรับปรุง เพื่อให้ตรวจสอบย้อนกลับได้</p></article>
+      <article class="narrative-card"><span class="narrative-card__index">02</span><h2>รหัสคงที่</h2><p>ใช้รหัสอำเภอและรหัสหมวดข้อมูลที่คงที่ ช่วยให้เชื่อมโยงและเปรียบเทียบข้ามชุดข้อมูลได้</p></article>
+      <article class="narrative-card"><span class="narrative-card__index">03</span><h2>ค่าที่ขาดไม่ใช่ศูนย์</h2><p>ค่าที่ไม่มีในต้นทางจะบันทึกเป็นค่าว่างพร้อมหมายเหตุ ไม่แทนด้วยศูนย์โดยอัตโนมัติ</p></article>
+    </div>
+    <SourceNote source={sourceLabel} period="หลายรอบข้อมูลตามแต่ละชุด" table="บทที่ 3 และตาราง 7.4" note="ไฟล์ทุกชุดใช้ schemaVersion 1.0.0 และ UTF-8" />
+  </div>
+</DashboardLayout>
+
+<style>
+  .download-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-3); }
+  .download-grid a { display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:var(--space-3); padding:var(--space-4); border:1px solid var(--color-border); border-radius:var(--radius-md); color:var(--color-navy-900); text-decoration:none; }
+  .download-grid a:hover { border-color:var(--color-blue-600); background:var(--color-slate-50); }
+  .download-grid a > span { display:grid; place-items:center; width:2.25rem; height:2.25rem; border-radius:var(--radius-md); background:var(--color-blue-100); }
+  .download-grid a > div { display:grid; min-width:0; }
+  .download-grid strong { font-size:var(--text-sm); }
+  .download-grid small { overflow:hidden; margin-top:var(--space-1); color:var(--color-slate-500); text-overflow:ellipsis; white-space:nowrap; }
+  @media (max-width:760px) { .download-grid { grid-template-columns:minmax(0,1fr); } }
+</style>

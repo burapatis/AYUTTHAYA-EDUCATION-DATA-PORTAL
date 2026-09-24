@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "1.0.0",
+  "datasetId": "students",
+  "titleTh": "นักเรียนจำแนกตามระดับ ชั้น และเพศ",
+  "period": { "type": "academic_year", "buddhistYear": 2567, "gregorianYear": 2024, "labelTh": "ปีการศึกษา 2567 (2024)" },
+  "sourceTables": ["3.3", "3.4", "3.5", "7.4"],
+  "unit": "คน",
+  "levels": [
+    { "id": "pre-elementary", "labelTh": "ก่อนประถมศึกษา", "total": 18672, "male": 9523, "female": 9149 },
+    { "id": "elementary", "labelTh": "ประถมศึกษา", "total": 55134, "male": 28307, "female": 26827 },
+    { "id": "lower-secondary", "labelTh": "มัธยมศึกษาตอนต้น", "total": 26870, "male": 13916, "female": 12954 },
+    { "id": "upper-secondary", "labelTh": "มัธยมศึกษาตอนปลาย", "total": 14447, "male": 6296, "female": 8151 }
+  ],
+  "grades": [
+    { "gradeId": "kg1", "labelTh": "อนุบาล 1", "total": 2900, "male": 1491, "female": 1409 },
+    { "gradeId": "kg2", "labelTh": "อนุบาล 2", "total": 7343, "male": 3713, "female": 3630 },
+    { "gradeId": "kg3", "labelTh": "อนุบาล 3", "total": 7944, "male": 4070, "female": 3874 },
+    { "gradeId": "early-childhood", "labelTh": "เด็กเล็ก", "total": 485, "male": 249, "female": 236 },
+    { "gradeId": "p1", "labelTh": "ประถม 1", "total": 8591, "male": 4416, "female": 4175 },
+    { "gradeId": "p2", "labelTh": "ประถม 2", "total": 8516, "male": 4537, "female": 3979 },
+    { "gradeId": "p3", "labelTh": "ประถม 3", "total": 9371, "male": 4597, "female": 4774 },
+    { "gradeId": "p4", "labelTh": "ประถม 4", "total": 9210, "male": 4696, "female": 4514 },
+    { "gradeId": "p5", "labelTh": "ประถม 5", "total": 9588, "male": 5005, "female": 4583 },
+    { "gradeId": "p6", "labelTh": "ประถม 6", "total": 9858, "male": 5056, "female": 4802 },
+    { "gradeId": "m1", "labelTh": "มัธยม 1", "total": 9814, "male": 5160, "female": 4654 },
+    { "gradeId": "m2", "labelTh": "มัธยม 2", "total": 8554, "male": 4423, "female": 4131 },
+    { "gradeId": "m3", "labelTh": "มัธยม 3", "total": 8502, "male": 4333, "female": 4169 },
+    { "gradeId": "m4", "labelTh": "มัธยม 4", "total": 4944, "male": 2164, "female": 2780 },
+    { "gradeId": "m5", "labelTh": "มัธยม 5", "total": 4841, "male": 2167, "female": 2674 },
+    { "gradeId": "m6", "labelTh": "มัธยม 6", "total": 4662, "male": 1965, "female": 2697 }
+  ],
+  "trend": [
+    { "academicYearBE": 2563, "total": 123115 },
+    { "academicYearBE": 2564, "total": 120751 },
+    { "academicYearBE": 2565, "total": 120626 },
+    { "academicYearBE": 2566, "total": 120206 },
+    { "academicYearBE": 2567, "total": 115123 }
+  ]
+}

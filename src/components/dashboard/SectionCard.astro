@@ -1,0 +1,66 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  padding?: 'none' | 'compact' | 'default';
+}
+
+const { title, description, padding = 'default' } = Astro.props;
+---
+
+<section class:list={['section-card', `padding-${padding}`]}>
+  {(title || description || Astro.slots.has('actions')) && (
+    <header>
+      <div>
+        {title && <h2>{title}</h2>}
+        {description && <p>{description}</p>}
+      </div>
+      {Astro.slots.has('actions') && <div class="section-card__actions"><slot name="actions" /></div>}
+    </header>
+  )}
+  <div class="section-card__body"><slot /></div>
+</section>
+
+<style>
+  .section-card {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .section-card.padding-default { padding: var(--space-5); }
+  .section-card.padding-compact { padding: var(--space-4); }
+  .section-card.padding-none { padding: 0; }
+
+  header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-5);
+    margin-bottom: var(--space-5);
+  }
+
+  h2 {
+    margin: 0;
+    font-size: var(--text-lg);
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    max-width: 48rem;
+    margin: var(--space-1) 0 0;
+    color: var(--color-slate-600);
+    font-size: var(--text-sm);
+  }
+
+  .section-card__actions {
+    flex: 0 0 auto;
+  }
+
+  .section-card__body {
+    min-width: 0;
+  }
+</style>

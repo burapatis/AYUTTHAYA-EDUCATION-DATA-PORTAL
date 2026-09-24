@@ -1,0 +1,121 @@
+---
+import Icon from '../foundation/Icon.astro';
+
+interface Props {
+  label: string;
+  value: string | number;
+  unit?: string;
+  detail?: string;
+  trend?: string;
+  trendDirection?: 'up' | 'down' | 'neutral';
+  icon?: 'districts' | 'school' | 'students' | 'teachers' | 'trend' | 'graduate' | 'learning';
+  featured?: boolean;
+}
+
+const {
+  label,
+  value,
+  unit,
+  detail,
+  trend,
+  trendDirection = 'neutral',
+  icon = 'trend',
+  featured = false,
+} = Astro.props;
+---
+
+<article class:list={['kpi-card', { featured }]}>
+  <div class="kpi-card__top">
+    <span class="kpi-card__label">{label}</span>
+    <span class="kpi-card__icon"><Icon name={icon} size={19} /></span>
+  </div>
+  <div class="kpi-card__value-row">
+    <strong>{value}</strong>
+    {unit && <span>{unit}</span>}
+  </div>
+  {(detail || trend) && (
+    <div class="kpi-card__footer">
+      {detail && <span>{detail}</span>}
+      {trend && <span class:list={['kpi-card__trend', `is-${trendDirection}`]}>{trend}</span>}
+    </div>
+  )}
+</article>
+
+<style>
+  .kpi-card {
+    min-width: 0;
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .kpi-card.featured {
+    border-color: #cbdce9;
+    background: linear-gradient(145deg, #fff 35%, #f0f6fa 100%);
+  }
+
+  .kpi-card__top,
+  .kpi-card__footer,
+  .kpi-card__value-row {
+    display: flex;
+    align-items: center;
+  }
+
+  .kpi-card__top,
+  .kpi-card__footer {
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .kpi-card__label {
+    color: var(--color-slate-600);
+    font-size: var(--text-sm);
+    font-weight: 620;
+  }
+
+  .kpi-card__icon {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-md);
+    background: var(--color-blue-100);
+    color: var(--color-navy-800);
+  }
+
+  .kpi-card__value-row {
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+  }
+
+  .kpi-card__value-row strong {
+    color: var(--color-navy-950);
+    font-size: clamp(1.65rem, 3vw, 2.25rem);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.035em;
+    line-height: 1;
+  }
+
+  .kpi-card__value-row > span {
+    align-self: flex-end;
+    color: var(--color-slate-500);
+    font-size: var(--text-xs);
+  }
+
+  .kpi-card__footer {
+    margin-top: var(--space-4);
+    color: var(--color-slate-500);
+    font-size: var(--text-xs);
+  }
+
+  .kpi-card__trend {
+    font-weight: 750;
+  }
+
+  .kpi-card__trend.is-up { color: var(--color-green-700); }
+  .kpi-card__trend.is-down { color: var(--color-red-700); }
+  .kpi-card__trend.is-neutral { color: var(--color-slate-600); }
+</style>

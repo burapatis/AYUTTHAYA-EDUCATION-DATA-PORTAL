@@ -1,0 +1,40 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import Breadcrumbs from '../components/navigation/Breadcrumbs.astro';
+import PageHeader from '../components/dashboard/PageHeader.astro';
+import KpiCard from '../components/data-display/KpiCard.astro';
+import ChartPanel from '../components/dashboard/ChartPanel.astro';
+import SectionCard from '../components/dashboard/SectionCard.astro';
+import DataTable from '../components/data-display/DataTable.astro';
+import Notice from '../components/data-display/Notice.astro';
+import SourceNote from '../components/data-display/SourceNote.astro';
+import EChart from '../components/charts/EChart';
+import { groupedBarOption } from '../lib/chart-options';
+import { formatNumber, lifelongActivities, sourceLabel } from '../data/fixtures';
+
+const registered = lifelongActivities.reduce((sum, item) => sum + item.registered, 0);
+const graduated = lifelongActivities.reduce((sum, item) => sum + item.graduated, 0);
+const columns = [{ key: 'activity', label: 'กิจกรรม/ระดับ' }, { key: 'registered', label: 'ผู้ลงทะเบียน', align: 'right' as const }, { key: 'graduated', label: 'ผู้ผ่าน/จบ', align: 'right' as const }];
+const rows = lifelongActivities.map((item) => ({ activity: item.label, registered: formatNumber(item.registered), graduated: formatNumber(item.graduated) }));
+---
+
+<DashboardLayout title="การเรียนรู้ตลอดชีวิต · ศูนย์ข้อมูลการศึกษาอยุธยา" activePath="/lifelong-learning">
+  <Breadcrumbs items={[{ label: 'ศูนย์ข้อมูล', href: '/' }, { label: 'การเรียนรู้ตลอดชีวิต' }]} />
+  <div class="page-stack">
+    <PageHeader eyebrow="Lifelong learning" title="การเรียนรู้ตลอดชีวิต" description="กิจกรรมการศึกษานอกระบบ การพัฒนาทักษะ และการเรียนรู้เพื่อชุมชน" period="ปีงบประมาณ 2567" status="ข้อมูลจากรายงานทางการ" />
+    <section aria-label="ตัวชี้วัดการเรียนรู้ตลอดชีวิต" class="kpi-grid">
+      <KpiCard label="ผู้ลงทะเบียนรวม" value={formatNumber(registered)} unit="คน" detail="รวม 8 กิจกรรม/ระดับ" icon="learning" featured />
+      <KpiCard label="จำนวนผู้ผ่าน/จบที่รายงาน" value={formatNumber(graduated)} unit="คน" detail="ผลรวมตามกิจกรรม" icon="graduate" />
+      <KpiCard label="มัธยมศึกษาตอนปลาย" value="11,603" unit="คน" detail="กลุ่มลงทะเบียนมากที่สุด" icon="students" />
+      <KpiCard label="ศูนย์ฝึกอาชีพชุมชน" value="5,553" unit="คน" detail="ผู้ลงทะเบียนพัฒนาทักษะอาชีพ" icon="learning" />
+    </section>
+    <Notice tone="info" title="การอ่านค่าผลลัพธ์"><p>ไม่ควรคำนวณ “อัตราจบ” จากยอดสองคอลัมน์โดยตรง เพราะบางกิจกรรมมีผู้ผ่านมากกว่าผู้ลงทะเบียน ซึ่งอาจมาจากคนละรุ่นหรือคนละช่วงอ้างอิง</p></Notice>
+    <ChartPanel title="ผู้ลงทะเบียนและผู้ผ่าน/จบตามกิจกรรม" description="เปรียบเทียบค่าที่รายงานโดยไม่ตีความเป็นอัตราสำเร็จ" height={440}>
+      <EChart client:visible height={420} option={groupedBarOption(lifelongActivities.map((item) => item.label), [{ name: 'ลงทะเบียน', data: lifelongActivities.map((item) => item.registered) }, { name: 'ผ่าน/จบ', data: lifelongActivities.map((item) => item.graduated), color: '#236b70' }])} label="กราฟผู้ลงทะเบียนและผู้ผ่านกิจกรรมการเรียนรู้ตลอดชีวิต" />
+    </ChartPanel>
+    <SectionCard title="กิจกรรมและผลการดำเนินงาน" description="คงค่าตามรายงานต้นทางเพื่อการตรวจสอบย้อนกลับ">
+      <DataTable caption="กิจกรรมการเรียนรู้ตลอดชีวิต" columns={columns} rows={rows} />
+    </SectionCard>
+    <SourceNote source={sourceLabel} period="ปีงบประมาณ 2567" table="ตาราง 3.15–3.16" note="ผู้ลงทะเบียนและผู้ผ่าน/จบอาจไม่ใช่ประชากรกลุ่มเดียวกัน จึงไม่สรุปเป็นอัตราร้อยละ" />
+  </div>
+</DashboardLayout>

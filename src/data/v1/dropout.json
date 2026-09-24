@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "datasetId": "dropout",
+  "titleTh": "นักเรียนออกกลางคัน",
+  "period": { "type": "academic_year_range", "startBuddhistYear": 2558, "endBuddhistYear": 2567, "labelTh": "ปีการศึกษา 2558–2567" },
+  "sourceTables": ["3.11", "3.12"],
+  "unit": "คน",
+  "trend": [
+    { "academicYearBE": 2558, "total": 37 },
+    { "academicYearBE": 2559, "total": 37 },
+    { "academicYearBE": 2560, "total": 68 },
+    { "academicYearBE": 2561, "total": 91 },
+    { "academicYearBE": 2562, "total": 96 },
+    { "academicYearBE": 2563, "total": 183 },
+    { "academicYearBE": 2564, "total": 157 },
+    { "academicYearBE": 2565, "total": 240 },
+    { "academicYearBE": 2566, "total": 154 },
+    { "academicYearBE": 2567, "total": 110 }
+  ],
+  "latestCauses": [
+    { "id": "family-migration", "labelTh": "อพยพตามครอบครัว", "total": 77 },
+    { "id": "family-problems", "labelTh": "ปัญหาครอบครัว", "total": 13 },
+    { "id": "adaptation", "labelTh": "ปัญหาการปรับตัว", "total": 10 },
+    { "id": "other", "labelTh": "กรณีอื่น ๆ", "total": 6 },
+    { "id": "poverty", "labelTh": "ฐานะยากจน", "total": 2 },
+    { "id": "family-income", "labelTh": "หาเลี้ยงครอบครัว", "total": 2 }
+  ],
+  "dataQuality": [
+    { "code": "SOURCE_TITLE_YEAR_MISSING", "severity": "warning", "messageTh": "หัวตาราง 3.12 ในเอกสารต้นทางไม่ระบุปีการศึกษาอย่างชัดเจน" }
+  ]
+}

@@ -1,0 +1,82 @@
+---
+import StatusBadge from '../data-display/StatusBadge.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  period?: string;
+  status?: string;
+}
+
+const { eyebrow, title, description, period, status } = Astro.props;
+---
+
+<header class="page-header">
+  <div class="page-header__copy">
+    {eyebrow && <p class="page-header__eyebrow">{eyebrow}</p>}
+    <h1>{title}</h1>
+    {description && <p class="page-header__description">{description}</p>}
+  </div>
+  {(period || status) && (
+    <div class="page-header__meta">
+      {status && <StatusBadge tone="official" label={status} />}
+      {period && <span>{period}</span>}
+    </div>
+  )}
+</header>
+
+<style>
+  .page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-8);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-header__copy {
+    max-width: 52rem;
+    min-width: 0;
+  }
+
+  .page-header__eyebrow {
+    margin-bottom: var(--space-2);
+    color: var(--color-gold-600);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin-bottom: 0;
+    font-size: var(--text-3xl);
+    letter-spacing: -0.035em;
+    overflow-wrap: anywhere;
+  }
+
+  .page-header__description {
+    margin: var(--space-3) 0 0;
+    color: var(--color-slate-600);
+    font-size: var(--text-base);
+  }
+
+  .page-header__meta {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--color-slate-600);
+    font-size: var(--text-xs);
+  }
+
+  @media (max-width: 760px) {
+    .page-header {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+  }
+</style>

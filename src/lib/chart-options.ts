@@ -1,0 +1,152 @@
+import type { EChartsOption } from 'echarts';
+
+export const chartColors = ['#1769aa', '#bd8422', '#236b70', '#7c5aa6', '#758ca3', '#a75151'];
+
+const axisLabel = {
+  color: '#64758a',
+  fontFamily: 'Noto Sans Thai, Leelawadee UI, system-ui, sans-serif',
+  fontSize: 11,
+};
+
+const base: EChartsOption = {
+  animationDuration: 500,
+  color: chartColors,
+  textStyle: {
+    color: '#344354',
+    fontFamily: 'Noto Sans Thai, Leelawadee UI, system-ui, sans-serif',
+  },
+  tooltip: {
+    trigger: 'axis',
+    backgroundColor: 'rgba(7, 26, 47, 0.94)',
+    borderWidth: 0,
+    textStyle: { color: '#fff', fontSize: 12 },
+  },
+  aria: { enabled: true },
+};
+
+export function barOption(
+  categories: string[],
+  values: number[],
+  seriesName: string,
+  options: { horizontal?: boolean; color?: string; unit?: string; gridLeft?: number } = {},
+): EChartsOption {
+  const { horizontal = false, color = chartColors[0], unit = 'คน', gridLeft = horizontal ? 92 : 48 } = options;
+  const categoryAxis = {
+    type: 'category' as const,
+    data: categories,
+    axisLine: { lineStyle: { color: '#cbd3dc' } },
+    axisTick: { show: false },
+    axisLabel: { ...axisLabel, interval: 0 },
+  };
+  const valueAxis = {
+    type: 'value' as const,
+    name: unit,
+    nameTextStyle: axisLabel,
+    axisLabel,
+    splitLine: { lineStyle: { color: '#e8edf1' } },
+  };
+
+  return {
+    ...base,
+    grid: { top: 24, right: 24, bottom: horizontal ? 28 : 58, left: gridLeft, containLabel: true },
+    xAxis: horizontal ? valueAxis : categoryAxis,
+    yAxis: horizontal ? categoryAxis : valueAxis,
+    series: [{
+      name: seriesName,
+      type: 'bar',
+      data: values,
+      barMaxWidth: 28,
+      itemStyle: { color, borderRadius: horizontal ? [0, 4, 4, 0] : [4, 4, 0, 0] },
+    }],
+  };
+}
+
+export function groupedBarOption(
+  categories: string[],
+  series: Array<{ name: string; data: number[]; color?: string }>,
+  unit = 'คน',
+): EChartsOption {
+  return {
+    ...base,
+    legend: { bottom: 0, icon: 'circle', textStyle: axisLabel },
+    grid: { top: 20, right: 24, bottom: 58, left: 54, containLabel: true },
+    xAxis: {
+      type: 'category',
+      data: categories,
+      axisLine: { lineStyle: { color: '#cbd3dc' } },
+      axisTick: { show: false },
+      axisLabel: { ...axisLabel, interval: 0 },
+    },
+    yAxis: {
+      type: 'value',
+      name: unit,
+      nameTextStyle: axisLabel,
+      axisLabel,
+      splitLine: { lineStyle: { color: '#e8edf1' } },
+    },
+    series: series.map((item, index) => ({
+      name: item.name,
+      type: 'bar',
+      data: item.data,
+      barMaxWidth: 28,
+      itemStyle: { color: item.color ?? chartColors[index], borderRadius: [4, 4, 0, 0] },
+    })),
+  };
+}
+
+export function lineOption(
+  categories: string[],
+  values: number[],
+  seriesName: string,
+  unit = 'คน',
+): EChartsOption {
+  return {
+    ...base,
+    grid: { top: 24, right: 24, bottom: 34, left: 54, containLabel: true },
+    xAxis: {
+      type: 'category',
+      boundaryGap: false,
+      data: categories,
+      axisLine: { lineStyle: { color: '#cbd3dc' } },
+      axisTick: { show: false },
+      axisLabel,
+    },
+    yAxis: {
+      type: 'value',
+      name: unit,
+      nameTextStyle: axisLabel,
+      axisLabel,
+      splitLine: { lineStyle: { color: '#e8edf1' } },
+    },
+    series: [{
+      name: seriesName,
+      type: 'line',
+      data: values,
+      showSymbol: true,
+      symbolSize: 7,
+      smooth: 0.22,
+      lineStyle: { color: chartColors[0], width: 3 },
+      itemStyle: { color: chartColors[0], borderColor: '#fff', borderWidth: 2 },
+      areaStyle: { color: 'rgba(23, 105, 170, 0.10)' },
+    }],
+  };
+}
+
+export function donutOption(data: Array<{ name: string; value: number }>): EChartsOption {
+  return {
+    ...base,
+    tooltip: { ...base.tooltip, trigger: 'item' },
+    legend: { type: 'scroll', bottom: 0, icon: 'circle', textStyle: axisLabel },
+    series: [{
+      name: 'จำนวน',
+      type: 'pie',
+      radius: ['48%', '72%'],
+      center: ['50%', '42%'],
+      avoidLabelOverlap: true,
+      itemStyle: { borderColor: '#fff', borderWidth: 3, borderRadius: 4 },
+      label: { show: false },
+      emphasis: { label: { show: true, fontSize: 13, fontWeight: 'bold' } },
+      data,
+    }],
+  };
+}

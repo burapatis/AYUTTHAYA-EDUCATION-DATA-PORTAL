@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "datasetId": "overview",
+  "titleTh": "ภาพรวมระบบการศึกษาจังหวัดพระนครศรีอยุธยา",
+  "period": { "type": "academic_year", "buddhistYear": 2567, "gregorianYear": 2024, "labelTh": "ปีการศึกษา 2567 (2024)" },
+  "sourceTables": ["3.1", "3.10", "7.4"],
+  "summary": {
+    "schools": 426,
+    "classrooms": 5610,
+    "teachers": 7358,
+    "students": 115123,
+    "districts": 16,
+    "studentsPerClassroom": 21,
+    "studentsPerTeacher": 16,
+    "dropoutStudents": 110
+  },
+  "jurisdictions": [
+    { "id": "obec", "labelTh": "สำนักงานคณะกรรมการการศึกษาขั้นพื้นฐาน", "shortLabelTh": "สพฐ.", "schools": 362, "classrooms": 4158, "teachers": 5401, "students": 80917 },
+    { "id": "private", "labelTh": "สำนักงานคณะกรรมการส่งเสริมการศึกษาเอกชน", "shortLabelTh": "เอกชน", "schools": 34, "classrooms": 839, "teachers": 1280, "students": 21926 },
+    { "id": "local", "labelTh": "กรมส่งเสริมการปกครองส่วนท้องถิ่น", "shortLabelTh": "ท้องถิ่น", "schools": 26, "classrooms": 564, "teachers": 582, "students": 10742 },
+    { "id": "other", "labelTh": "ส่วนราชการอื่น", "shortLabelTh": "อื่น ๆ", "schools": 4, "classrooms": 49, "teachers": 95, "students": 1538 }
+  ],
+  "studentTrend": [
+    { "academicYearBE": 2563, "total": 123115 },
+    { "academicYearBE": 2564, "total": 120751 },
+    { "academicYearBE": 2565, "total": 120626 },
+    { "academicYearBE": 2566, "total": 120206 },
+    { "academicYearBE": 2567, "total": 115123 }
+  ],
+  "teacherTrend": [
+    { "academicYearBE": 2563, "total": 7259 },
+    { "academicYearBE": 2564, "total": 6820 },
+    { "academicYearBE": 2565, "total": 6948 },
+    { "academicYearBE": 2566, "total": 7862 },
+    { "academicYearBE": 2567, "total": 7358 }
+  ]
+}

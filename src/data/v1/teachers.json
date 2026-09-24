@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "datasetId": "teachers",
+  "titleTh": "ครูจำแนกตามคุณวุฒิ ระดับที่สอน และเพศ",
+  "period": { "type": "academic_year", "buddhistYear": 2567, "gregorianYear": 2024, "labelTh": "ปีการศึกษา 2567 (2024)" },
+  "sourceTables": ["3.6", "3.7", "3.8", "3.9", "7.4"],
+  "unit": "คน",
+  "qualifications": [
+    { "id": "below-diploma", "labelTh": "ต่ำกว่าอนุปริญญา", "total": 128 },
+    { "id": "diploma", "labelTh": "อนุปริญญาหรือเทียบเท่า", "total": 54 },
+    { "id": "bachelor", "labelTh": "ปริญญาตรี", "total": 5796 },
+    { "id": "master-or-higher", "labelTh": "ปริญญาโทหรือสูงกว่า", "total": 1380 }
+  ],
+  "teachingLevels": [
+    { "id": "pre-elementary", "labelTh": "ก่อนประถมศึกษา", "total": 1100, "male": 38, "female": 1062 },
+    { "id": "elementary", "labelTh": "ประถมศึกษา", "total": 3801, "male": 880, "female": 2921 },
+    { "id": "lower-secondary", "labelTh": "มัธยมศึกษาตอนต้น", "total": 1524, "male": 576, "female": 948 },
+    { "id": "upper-secondary", "labelTh": "มัธยมศึกษาตอนปลาย", "total": 933, "male": 337, "female": 596 }
+  ],
+  "trend": [
+    { "academicYearBE": 2563, "total": 7259 },
+    { "academicYearBE": 2564, "total": 6820 },
+    { "academicYearBE": 2565, "total": 6948 },
+    { "academicYearBE": 2566, "total": 7862 },
+    { "academicYearBE": 2567, "total": 7358 }
+  ]
+}

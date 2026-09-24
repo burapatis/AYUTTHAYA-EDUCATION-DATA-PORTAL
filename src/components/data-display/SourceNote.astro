@@ -1,0 +1,55 @@
+---
+import Icon from '../foundation/Icon.astro';
+
+interface Props {
+  source: string;
+  period: string;
+  table?: string;
+  note?: string;
+}
+
+const { source, period, table, note } = Astro.props;
+---
+
+<aside class="source-note" aria-label="แหล่งข้อมูลและหมายเหตุ">
+  <span class="source-note__icon"><Icon name="info" size={18} /></span>
+  <div>
+    <p><strong>แหล่งข้อมูล:</strong> {source}</p>
+    <p><strong>รอบข้อมูล:</strong> {period}{table ? ` · ${table}` : ''}</p>
+    {note && <p class="source-note__detail">{note}</p>}
+  </div>
+</aside>
+
+<style>
+  .source-note {
+    display: flex;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: 1px solid #cbdce9;
+    border-radius: var(--radius-md);
+    background: #f2f7fb;
+    color: var(--color-slate-700);
+    font-size: var(--text-xs);
+  }
+
+  .source-note__icon {
+    flex: 0 0 auto;
+    color: var(--color-blue-600);
+  }
+
+  .source-note p {
+    margin: 0;
+  }
+
+  .source-note p + p {
+    margin-top: var(--space-1);
+  }
+
+  .source-note strong {
+    color: var(--color-navy-900);
+  }
+
+  .source-note__detail {
+    color: var(--color-slate-600);
+  }
+</style>

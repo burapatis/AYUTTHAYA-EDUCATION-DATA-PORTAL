@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "datasetId": "districts",
+  "titleTh": "สถิติการศึกษาจำแนกรายอำเภอ",
+  "period": { "type": "academic_year", "buddhistYear": 2567, "gregorianYear": 2024, "labelTh": "ปีการศึกษา 2567 (2024)" },
+  "sourceTables": ["3.2"],
+  "units": { "schools": "แห่ง", "classrooms": "ห้อง", "teachers": "คน", "students": "คน", "ratios": "คนต่อหน่วย" },
+  "records": [
+    { "districtCode": "1301", "districtNameTh": "พระนครศรีอยุธยา", "schools": 55, "classrooms": 1188, "teachers": 1843, "students": 33237, "studentsPerClassroom": 28, "studentsPerTeacher": 18 },
+    { "districtCode": "1302", "districtNameTh": "ท่าเรือ", "schools": 29, "classrooms": 465, "teachers": 415, "students": 7007, "studentsPerClassroom": 15, "studentsPerTeacher": 17 },
+    { "districtCode": "1303", "districtNameTh": "นครหลวง", "schools": 18, "classrooms": 179, "teachers": 287, "students": 3582, "studentsPerClassroom": 20, "studentsPerTeacher": 12 },
+    { "districtCode": "1304", "districtNameTh": "บางไทร", "schools": 28, "classrooms": 324, "teachers": 353, "students": 5981, "studentsPerClassroom": 18, "studentsPerTeacher": 17 },
+    { "districtCode": "1305", "districtNameTh": "บางบาล", "schools": 22, "classrooms": 208, "teachers": 191, "students": 2263, "studentsPerClassroom": 11, "studentsPerTeacher": 12 },
+    { "districtCode": "1306", "districtNameTh": "บางปะอิน", "schools": 42, "classrooms": 704, "teachers": 991, "students": 16686, "studentsPerClassroom": 24, "studentsPerTeacher": 17 },
+    { "districtCode": "1307", "districtNameTh": "บางปะหัน", "schools": 27, "classrooms": 265, "teachers": 292, "students": 3912, "studentsPerClassroom": 15, "studentsPerTeacher": 13 },
+    { "districtCode": "1308", "districtNameTh": "ผักไห่", "schools": 23, "classrooms": 225, "teachers": 308, "students": 3564, "studentsPerClassroom": 16, "studentsPerTeacher": 12 },
+    { "districtCode": "1309", "districtNameTh": "ภาชี", "schools": 19, "classrooms": 202, "teachers": 277, "students": 4279, "studentsPerClassroom": 21, "studentsPerTeacher": 15 },
+    { "districtCode": "1310", "districtNameTh": "ลาดบัวหลวง", "schools": 26, "classrooms": 273, "teachers": 372, "students": 4250, "studentsPerClassroom": 16, "studentsPerTeacher": 11 },
+    { "districtCode": "1311", "districtNameTh": "วังน้อย", "schools": 31, "classrooms": 443, "teachers": 666, "students": 10998, "studentsPerClassroom": 25, "studentsPerTeacher": 17 },
+    { "districtCode": "1312", "districtNameTh": "เสนา", "schools": 40, "classrooms": 491, "teachers": 642, "students": 10209, "studentsPerClassroom": 21, "studentsPerTeacher": 16 },
+    { "districtCode": "1313", "districtNameTh": "บางซ้าย", "schools": 17, "classrooms": 172, "teachers": 167, "students": 2047, "studentsPerClassroom": 12, "studentsPerTeacher": 12 },
+    { "districtCode": "1314", "districtNameTh": "อุทัย", "schools": 29, "classrooms": 291, "teachers": 351, "students": 5127, "studentsPerClassroom": 18, "studentsPerTeacher": 15 },
+    { "districtCode": "1315", "districtNameTh": "มหาราช", "schools": 12, "classrooms": 113, "teachers": 136, "students": 1273, "studentsPerClassroom": 11, "studentsPerTeacher": 9 },
+    { "districtCode": "1316", "districtNameTh": "บ้านแพรก", "schools": 8, "classrooms": 67, "teachers": 67, "students": 708, "studentsPerClassroom": 11, "studentsPerTeacher": 11 }
+  ]
+}

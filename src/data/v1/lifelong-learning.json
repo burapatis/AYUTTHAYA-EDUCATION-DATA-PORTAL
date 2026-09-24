@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "datasetId": "lifelong-learning",
+  "titleTh": "การเรียนรู้ตลอดชีวิต",
+  "period": { "type": "fiscal_year", "buddhistYear": 2567, "gregorianYearStart": 2023, "gregorianYearEnd": 2024, "labelTh": "ปีงบประมาณ 2567" },
+  "sourceTables": ["3.15", "3.16"],
+  "unit": "คน",
+  "records": [
+    { "id": "literacy", "labelTh": "การส่งเสริมการรู้หนังสือ", "registered": 22, "completed": 12 },
+    { "id": "elementary", "labelTh": "ประถมศึกษา", "registered": 1694, "completed": 136 },
+    { "id": "lower-secondary", "labelTh": "มัธยมศึกษาตอนต้น", "registered": 6734, "completed": 871 },
+    { "id": "upper-secondary", "labelTh": "มัธยมศึกษาตอนปลาย", "registered": 11603, "completed": 1536 },
+    { "id": "life-skills", "labelTh": "พัฒนาทักษะชีวิต", "registered": 4915, "completed": 4973 },
+    { "id": "sufficiency-economy", "labelTh": "เศรษฐกิจพอเพียง", "registered": 858, "completed": 927 },
+    { "id": "society-community", "labelTh": "สังคมและชุมชน", "registered": 1782, "completed": 1791 },
+    { "id": "community-vocational", "labelTh": "ศูนย์ฝึกอาชีพชุมชน", "registered": 5553, "completed": 5463 }
+  ],
+  "dataQuality": [
+    { "code": "NON_COHORT_TOTALS", "severity": "info", "messageTh": "จำนวนผู้ลงทะเบียนและผู้ผ่าน/จบอาจมาจากคนละรุ่นหรือคนละช่วงอ้างอิง จึงไม่ควรคำนวณเป็นอัตราจบโดยตรง" }
+  ]
+}

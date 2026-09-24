@@ -1,0 +1,93 @@
+---
+import Icon from '../foundation/Icon.astro';
+import { withBase } from '../../lib/site';
+
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  eyebrow?: string;
+  icon?: 'districts' | 'school' | 'students' | 'teachers' | 'trend' | 'graduate' | 'learning' | 'database';
+}
+
+const { href, title, description, eyebrow, icon = 'trend' } = Astro.props;
+---
+
+<a class="navigation-card" href={withBase(href)}>
+  <span class="navigation-card__icon"><Icon name={icon} size={22} /></span>
+  <span class="navigation-card__copy">
+    {eyebrow && <small>{eyebrow}</small>}
+    <strong>{title}</strong>
+    <span>{description}</span>
+  </span>
+  <span class="navigation-card__arrow"><Icon name="arrow" size={18} /></span>
+</a>
+
+<style>
+  .navigation-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+    box-shadow: var(--shadow-xs);
+    color: inherit;
+    text-decoration: none;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .navigation-card:hover {
+    transform: translateY(-2px);
+    border-color: #b9cad8;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .navigation-card__icon {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-md);
+    background: var(--color-blue-100);
+    color: var(--color-navy-800);
+  }
+
+  .navigation-card__copy {
+    display: grid;
+    min-width: 0;
+  }
+
+  .navigation-card small {
+    margin-bottom: var(--space-1);
+    color: var(--color-gold-600);
+    font-size: 0.65rem;
+    font-weight: 780;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .navigation-card strong {
+    color: var(--color-navy-900);
+    font-size: var(--text-base);
+  }
+
+  .navigation-card__copy > span {
+    margin-top: var(--space-1);
+    color: var(--color-slate-600);
+    font-size: var(--text-xs);
+    line-height: 1.5;
+  }
+
+  .navigation-card__arrow {
+    color: var(--color-slate-500);
+    transition: transform var(--transition-fast);
+  }
+
+  .navigation-card:hover .navigation-card__arrow {
+    transform: translateX(3px);
+    color: var(--color-navy-800);
+  }
+</style>

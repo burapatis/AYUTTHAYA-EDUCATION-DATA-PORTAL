@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0.0",
+  "portal": {
+    "id": "ayutthaya-education-data-portal",
+    "titleTh": "ศูนย์ข้อมูลการศึกษาจังหวัดพระนครศรีอยุธยา",
+    "provinceCode": "13",
+    "defaultLanguage": "th",
+    "lastUpdated": "2026-09-24"
+  },
+  "source": {
+    "titleTh": "รายงานสถิติจังหวัดพระนครศรีอยุธยา พ.ศ. 2568",
+    "editionBuddhistYear": 2568,
+    "publisherType": "official_statistical_report"
+  },
+  "missingValuePolicy": "Use null when a value is not reported; never replace a missing value with zero.",
+  "datasets": [
+    { "id": "overview", "titleTh": "ภาพรวมระบบการศึกษา", "path": "overview.json", "coverage": "จังหวัด", "periodLabelTh": "ปีการศึกษา 2567 และแนวโน้ม 2563–2567", "sourceTables": ["3.1", "3.10", "7.4"], "status": "verified" },
+    { "id": "districts", "titleTh": "สถิติการศึกษารายอำเภอ", "path": "districts.json", "coverage": "16 อำเภอ", "periodLabelTh": "ปีการศึกษา 2567", "sourceTables": ["3.2"], "status": "verified" },
+    { "id": "students", "titleTh": "นักเรียนตามระดับ ชั้น และเพศ", "path": "students.json", "coverage": "จังหวัด", "periodLabelTh": "ปีการศึกษา 2567 และแนวโน้ม 2563–2567", "sourceTables": ["3.3", "3.4", "3.5", "7.4"], "status": "verified" },
+    { "id": "teachers", "titleTh": "ครูตามคุณวุฒิ ระดับที่สอน และเพศ", "path": "teachers.json", "coverage": "จังหวัด", "periodLabelTh": "ปีการศึกษา 2567 และแนวโน้ม 2563–2567", "sourceTables": ["3.6", "3.7", "3.8", "3.9", "7.4"], "status": "verified" },
+    { "id": "dropout", "titleTh": "นักเรียนออกกลางคัน", "path": "dropout.json", "coverage": "จังหวัด", "periodLabelTh": "ปีการศึกษา 2558–2567", "sourceTables": ["3.11", "3.12"], "status": "review_note" },
+    { "id": "postsecondary", "titleTh": "อาชีวศึกษาและอุดมศึกษา", "path": "postsecondary.json", "coverage": "จังหวัด", "periodLabelTh": "ปีการศึกษา 2567", "sourceTables": ["3.13", "3.14"], "status": "verified" },
+    { "id": "lifelong-learning", "titleTh": "การเรียนรู้ตลอดชีวิต", "path": "lifelong-learning.json", "coverage": "จังหวัด", "periodLabelTh": "ปีงบประมาณ 2567", "sourceTables": ["3.15", "3.16"], "status": "verified" }
+  ]
+}

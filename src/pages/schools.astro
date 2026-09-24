@@ -1,0 +1,41 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import Breadcrumbs from '../components/navigation/Breadcrumbs.astro';
+import PageHeader from '../components/dashboard/PageHeader.astro';
+import KpiCard from '../components/data-display/KpiCard.astro';
+import ChartPanel from '../components/dashboard/ChartPanel.astro';
+import SectionCard from '../components/dashboard/SectionCard.astro';
+import DataTable from '../components/data-display/DataTable.astro';
+import SourceNote from '../components/data-display/SourceNote.astro';
+import EChart from '../components/charts/EChart';
+import { barOption } from '../lib/chart-options';
+import { academicPeriod, districtRows, formatNumber, jurisdictions, provinceSummary, sourceLabel } from '../data/fixtures';
+
+const columns = [{ key: 'district', label: 'อำเภอ' }, { key: 'schools', label: 'สถานศึกษา', align: 'right' as const }, { key: 'classrooms', label: 'ห้องเรียน', align: 'right' as const }, { key: 'average', label: 'ห้องต่อสถานศึกษา', align: 'right' as const }];
+const rows = districtRows.map((row) => ({ district: row.name, schools: formatNumber(row.schools), classrooms: formatNumber(row.classrooms), average: (row.classrooms / row.schools).toFixed(1) }));
+---
+
+<DashboardLayout title="โรงเรียนและห้องเรียน · ศูนย์ข้อมูลการศึกษาอยุธยา" activePath="/schools">
+  <Breadcrumbs items={[{ label: 'ศูนย์ข้อมูล', href: '/' }, { label: 'โรงเรียนและห้องเรียน' }]} />
+  <div class="page-stack">
+    <PageHeader eyebrow="Education infrastructure" title="โรงเรียนและห้องเรียน" description="สำรวจโครงสร้างพื้นฐานทางการศึกษา แยกตามสังกัดและพื้นที่" period={academicPeriod} status="ข้อมูลจากรายงานทางการ" />
+    <section aria-label="ตัวชี้วัดสถานศึกษา" class="kpi-grid">
+      <KpiCard label="สถานศึกษาทั้งหมด" value={formatNumber(provinceSummary.schools)} unit="แห่ง" detail="4 กลุ่มสังกัด" icon="school" featured />
+      <KpiCard label="ห้องเรียนทั้งหมด" value={formatNumber(provinceSummary.classrooms)} unit="ห้อง" detail="ทุกระดับการศึกษา" icon="trend" />
+      <KpiCard label="สถานศึกษา สพฐ." value="362" unit="แห่ง" detail="85% ของสถานศึกษาทั้งหมด" icon="school" />
+      <KpiCard label="ห้องต่อสถานศึกษา" value="13.2" unit="ห้อง" detail="คำนวณจากยอดรวมจังหวัด" icon="trend" />
+    </section>
+    <div class="content-grid">
+      <ChartPanel title="สถานศึกษาจำแนกตามสังกัด" description="จำนวนแห่งในแต่ละกลุ่มสังกัด" height={340}>
+        <EChart client:visible option={barOption(jurisdictions.map((item) => item.shortLabel), jurisdictions.map((item) => item.schools), 'สถานศึกษา', { unit: 'แห่ง' })} label="กราฟจำนวนสถานศึกษาแยกตามสังกัด" />
+      </ChartPanel>
+      <ChartPanel title="ห้องเรียนจำแนกตามสังกัด" description="จำนวนห้องเรียนในแต่ละกลุ่มสังกัด" height={340}>
+        <EChart client:visible option={barOption(jurisdictions.map((item) => item.shortLabel), jurisdictions.map((item) => item.classrooms), 'ห้องเรียน', { color: '#236b70', unit: 'ห้อง' })} label="กราฟจำนวนห้องเรียนแยกตามสังกัด" />
+      </ChartPanel>
+    </div>
+    <SectionCard title="สถานศึกษาและห้องเรียนรายอำเภอ" description="ค่าเฉลี่ยห้องต่อสถานศึกษาคำนวณจากจำนวนห้องเรียนหารด้วยจำนวนสถานศึกษา">
+      <DataTable caption="สถานศึกษาและห้องเรียนรายอำเภอ" columns={columns} rows={rows} compact />
+    </SectionCard>
+    <SourceNote source={sourceLabel} period={academicPeriod} table="ตาราง 3.1–3.2" note="คำว่า “สถานศึกษา” ครอบคลุมหน่วยงานตามนิยามของตารางต้นทาง" />
+  </div>
+</DashboardLayout>

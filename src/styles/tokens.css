@@ -1,0 +1,80 @@
+:root {
+  color-scheme: light;
+
+  --color-navy-950: #071a2f;
+  --color-navy-900: #0b2542;
+  --color-navy-800: #12395f;
+  --color-navy-700: #1a4d78;
+  --color-blue-600: #1769aa;
+  --color-blue-100: #e7f1fa;
+  --color-gold-600: #9b6a16;
+  --color-gold-500: #bd8422;
+  --color-gold-100: #f8edda;
+  --color-teal-700: #236b70;
+  --color-teal-100: #e2f2f1;
+  --color-red-700: #a33a3a;
+  --color-red-100: #fae8e8;
+  --color-green-700: #2d6a4f;
+  --color-green-100: #e4f3eb;
+
+  --color-slate-950: #17202a;
+  --color-slate-800: #344354;
+  --color-slate-700: #4b5d70;
+  --color-slate-600: #64758a;
+  --color-slate-500: #7c8997;
+  --color-slate-400: #aab5c1;
+  --color-slate-300: #cbd3dc;
+  --color-slate-200: #e1e6eb;
+  --color-slate-100: #eef1f4;
+  --color-slate-50: #f7f9fb;
+  --color-white: #ffffff;
+
+  --color-bg: #f3f6f8;
+  --color-surface: #ffffff;
+  --color-surface-subtle: #f8fafb;
+  --color-border: #dce3e9;
+  --color-border-strong: #c3ced8;
+  --color-text: var(--color-slate-950);
+  --color-text-muted: var(--color-slate-600);
+  --color-primary: var(--color-navy-900);
+  --color-accent: var(--color-gold-500);
+  --color-focus: #2d79ba;
+
+  --font-sans: "Noto Sans Thai", "Leelawadee UI", "Th Sarabun New", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: clamp(1.5rem, 2vw, 2rem);
+  --text-3xl: clamp(2rem, 4vw, 3rem);
+
+  --leading-tight: 1.25;
+  --leading-normal: 1.6;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.125rem;
+
+  --shadow-xs: 0 1px 2px rgb(7 26 47 / 0.05);
+  --shadow-sm: 0 1px 3px rgb(7 26 47 / 0.08), 0 1px 2px rgb(7 26 47 / 0.04);
+  --shadow-md: 0 10px 30px rgb(7 26 47 / 0.08);
+
+  --content-max: 1600px;
+  --sidebar-width: 16.5rem;
+  --header-height: 4.5rem;
+  --transition-fast: 140ms ease;
+}

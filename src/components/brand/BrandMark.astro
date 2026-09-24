@@ -1,0 +1,78 @@
+---
+import { withBase } from '../../lib/site';
+
+interface Props {
+  compact?: boolean;
+  inverse?: boolean;
+}
+
+const { compact = false, inverse = false } = Astro.props;
+---
+
+<a class:list={['brand', { compact, inverse }]} href={withBase('/')} aria-label="หน้าหลัก ศูนย์ข้อมูลการศึกษาพระนครศรีอยุธยา">
+  <span class="brand__mark" aria-hidden="true">
+    <svg viewBox="0 0 44 44" role="presentation">
+      <path d="M22 4 7 13v18l15 9 15-9V13Z" fill="currentColor" opacity=".14" />
+      <path d="m10 15 12-7 12 7M13 19h18M15.5 19v10M22 19v10M28.5 19v10M12 32h20" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" />
+      <circle cx="22" cy="14" r="2.2" fill="var(--brand-accent)" />
+    </svg>
+  </span>
+  <span class="brand__copy">
+    <strong>Ayutthaya Education Data</strong>
+    <small>ศูนย์ข้อมูลการศึกษาจังหวัดพระนครศรีอยุธยา</small>
+  </span>
+</a>
+
+<style>
+  .brand {
+    --brand-accent: var(--color-gold-500);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+    color: var(--color-navy-900);
+    text-decoration: none;
+  }
+
+  .brand.inverse {
+    color: var(--color-white);
+  }
+
+  .brand__mark {
+    flex: 0 0 auto;
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .brand__copy {
+    display: grid;
+    min-width: 0;
+    line-height: 1.25;
+  }
+
+  .brand__copy strong {
+    overflow: hidden;
+    font-size: var(--text-sm);
+    font-weight: 750;
+    letter-spacing: 0.01em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .brand__copy small {
+    overflow: hidden;
+    margin-top: 0.2rem;
+    color: var(--color-slate-600);
+    font-size: 0.68rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .inverse .brand__copy small {
+    color: rgb(255 255 255 / 0.7);
+  }
+
+  .compact .brand__copy {
+    display: none;
+  }
+</style>

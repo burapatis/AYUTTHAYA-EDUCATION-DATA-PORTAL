@@ -1,0 +1,59 @@
+---
+import { withBase } from '../../lib/site';
+---
+
+<footer class="app-footer">
+  <div>
+    <strong>ศูนย์ข้อมูลการศึกษาจังหวัดพระนครศรีอยุธยา</strong>
+    <p>นำเสนอข้อมูลเพื่อการวางแผน การตัดสินใจ และการเข้าถึงข้อมูลสาธารณะ</p>
+  </div>
+  <nav aria-label="เมนูส่วนท้าย">
+    <a href={withBase('/methodology')}>วิธีการ</a>
+    <a href={withBase('/data')}>ชุดข้อมูล</a>
+    <a href={withBase('/about')}>เกี่ยวกับโครงการ</a>
+  </nav>
+</footer>
+
+<style>
+  .app-footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding-top: var(--space-10);
+    margin-top: var(--space-12);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-slate-600);
+    font-size: var(--text-xs);
+  }
+
+  .app-footer strong {
+    color: var(--color-navy-900);
+  }
+
+  .app-footer p {
+    margin: var(--space-1) 0 0;
+  }
+
+  .app-footer nav {
+    display: flex;
+    gap: var(--space-5);
+  }
+
+  .app-footer a {
+    font-weight: 650;
+    text-decoration: none;
+  }
+
+  .app-footer a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+  }
+
+  @media (max-width: 640px) {
+    .app-footer {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>

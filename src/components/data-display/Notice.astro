@@ -1,0 +1,59 @@
+---
+import Icon from '../foundation/Icon.astro';
+
+interface Props {
+  tone?: 'info' | 'warning' | 'success';
+  title?: string;
+}
+
+const { tone = 'info', title } = Astro.props;
+---
+
+<aside class:list={['notice', `notice--${tone}`]}>
+  <span class="notice__icon"><Icon name={tone === 'success' ? 'check' : 'info'} size={19} /></span>
+  <div>
+    {title && <strong>{title}</strong>}
+    <div class="notice__body"><slot /></div>
+  </div>
+</aside>
+
+<style>
+  .notice {
+    display: flex;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: 1px solid #cbdce9;
+    border-radius: var(--radius-md);
+    background: #f2f7fb;
+    color: var(--color-slate-700);
+    font-size: var(--text-sm);
+  }
+
+  .notice--warning {
+    border-color: #ead3a7;
+    background: #fffaf0;
+  }
+
+  .notice--success {
+    border-color: #c9e4d7;
+    background: #f1faf5;
+  }
+
+  .notice__icon {
+    flex: 0 0 auto;
+    color: var(--color-blue-600);
+  }
+
+  .notice--warning .notice__icon { color: var(--color-gold-600); }
+  .notice--success .notice__icon { color: var(--color-green-700); }
+
+  strong {
+    display: block;
+    margin-bottom: var(--space-1);
+    color: var(--color-navy-900);
+  }
+
+  .notice__body :global(p) {
+    margin: 0;
+  }
+</style>
