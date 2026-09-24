@@ -4,7 +4,7 @@ export const chartColors = ['#1769aa', '#bd8422', '#236b70', '#7c5aa6', '#758ca3
 
 const axisLabel = {
   color: '#64758a',
-  fontFamily: 'Noto Sans Thai, Leelawadee UI, system-ui, sans-serif',
+  fontFamily: '"Noto Sans Thai Variable", "Noto Sans Thai", Leelawadee UI, system-ui, sans-serif',
   fontSize: 11,
 };
 
@@ -13,7 +13,7 @@ const base: EChartsOption = {
   color: chartColors,
   textStyle: {
     color: '#344354',
-    fontFamily: 'Noto Sans Thai, Leelawadee UI, system-ui, sans-serif',
+    fontFamily: '"Noto Sans Thai Variable", "Noto Sans Thai", Leelawadee UI, system-ui, sans-serif',
   },
   tooltip: {
     trigger: 'axis',
@@ -147,6 +147,66 @@ export function donutOption(data: Array<{ name: string; value: number }>): EChar
       label: { show: false },
       emphasis: { label: { show: true, fontSize: 13, fontWeight: 'bold' } },
       data,
+    }],
+  };
+}
+
+export function districtMapOption(
+  rows: Array<{ name: string; students: number; schools: number; teachers: number; classrooms: number }>,
+): EChartsOption {
+  const values = rows.map((row) => row.students);
+  const format = (value: number) => new Intl.NumberFormat('th-TH').format(value);
+
+  return {
+    ...base,
+    tooltip: {
+      trigger: 'item',
+      backgroundColor: 'rgba(7, 26, 47, 0.94)',
+      borderWidth: 0,
+      textStyle: { color: '#fff', fontSize: 12 },
+      formatter: (item) => {
+        const point = Array.isArray(item) ? item[0] : item;
+        const row = rows.find((entry) => entry.name === point?.name);
+        if (!row || !point) return '';
+        return [
+          row.name,
+          `นักเรียน ${format(row.students)} คน`,
+          `ครู ${format(row.teachers)} คน`,
+          `สถานศึกษา ${format(row.schools)} แห่ง`,
+          `ห้องเรียน ${format(row.classrooms)} ห้อง`,
+        ].join('<br/>');
+      },
+    },
+    visualMap: {
+      min: Math.min(...values),
+      max: Math.max(...values),
+      text: ['มาก', 'น้อย'],
+      calculable: false,
+      orient: 'horizontal',
+      left: 'center',
+      bottom: 0,
+      itemWidth: 12,
+      itemHeight: 80,
+      textStyle: axisLabel,
+      inRange: { color: ['#e7f1fa', '#1769aa', '#0b2542'] },
+    },
+    series: [{
+      name: 'นักเรียน',
+      type: 'map',
+      map: 'ayutthaya',
+      roam: false,
+      selectedMode: false,
+      top: 16,
+      bottom: 48,
+      left: 24,
+      right: 24,
+      data: rows.map((row) => ({ name: row.name, value: row.students })),
+      itemStyle: { borderColor: '#ffffff', borderWidth: 1.2, areaColor: '#e7f1fa' },
+      emphasis: {
+        label: { show: true, color: '#071a2f', fontSize: 12, fontWeight: 700 },
+        itemStyle: { areaColor: '#bd8422' },
+      },
+      label: { show: false },
     }],
   };
 }

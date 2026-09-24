@@ -10,9 +10,18 @@ import DataTable from '../components/data-display/DataTable.astro';
 import SourceNote from '../components/data-display/SourceNote.astro';
 import EChart from '../components/charts/EChart';
 import { barOption, lineOption } from '../lib/chart-options';
+import { withBase } from '../lib/site';
 import { academicPeriod, districtRows, formatNumber, provinceSummary, sourceLabel, studentLevels, studentTrend } from '../data/fixtures';
 
 const topDistricts = [...districtRows].sort((a, b) => b.students - a.students).slice(0, 5);
+const mostStudents = topDistricts[0];
+const leastStudents = [...districtRows].sort((a, b) => a.students - b.students)[0];
+const previousStudents = studentTrend.at(-2);
+const latestStudents = studentTrend.at(-1);
+const studentChangePercent = previousStudents && latestStudents
+  ? ((latestStudents.total - previousStudents.total) / previousStudents.total) * 100
+  : 0;
+const largestShare = mostStudents ? (mostStudents.students / provinceSummary.students) * 100 : 0;
 const districtColumns = [
   { key: 'district', label: 'อำเภอ' },
   { key: 'schools', label: 'สถานศึกษา', align: 'right' as const },
@@ -25,6 +34,37 @@ const districtTable = topDistricts.map((row) => ({ district: row.name, schools: 
 <DashboardLayout title="ภาพรวม · ศูนย์ข้อมูลการศึกษาจังหวัดพระนครศรีอยุธยา" description="ภาพรวมตัวชี้วัดการศึกษาจังหวัดพระนครศรีอยุธยา" activePath="/">
   <Breadcrumbs items={[{ label: 'ศูนย์ข้อมูล' }, { label: 'ภาพรวม' }]} />
   <div class="page-stack">
+    <section class="insight-band" aria-label="ข้อค้นพบสำคัญ">
+      <div class="insight-band__intro">
+        <p>Key findings</p>
+        <h2>ข้อค้นพบจากข้อมูลปีล่าสุด</h2>
+        <p>
+          {academicPeriod} จังหวัดมีนักเรียน {formatNumber(provinceSummary.students)} คน{' '}
+          {studentChangePercent < 0 ? `ลดลง ${Math.abs(studentChangePercent).toFixed(1)}% จากปีก่อน` : `เปลี่ยน ${studentChangePercent.toFixed(1)}% จากปีก่อน`}
+          {mostStudents && leastStudents && ` โดยอำเภอ${mostStudents.name}มีนักเรียนมากที่สุด และอำเภอ${leastStudents.name}มีน้อยที่สุด`}
+        </p>
+      </div>
+      <div class="insight-band__findings">
+        <article>
+          <span>แนวโน้มนักเรียน</span>
+          <strong>{studentChangePercent < 0 ? '−' : '+'}{Math.abs(studentChangePercent).toFixed(1)}%</strong>
+          <p>{previousStudents && latestStudents ? `จาก ${formatNumber(previousStudents.total)} คน ในปี ${previousStudents.year}` : academicPeriod}</p>
+          <a href={withBase('/students')}>ดูโครงสร้างนักเรียน</a>
+        </article>
+        <article>
+          <span>นักเรียนมากที่สุด</span>
+          <strong>{mostStudents ? mostStudents.name : '—'}</strong>
+          <p>{mostStudents ? `${formatNumber(mostStudents.students)} คน · ${largestShare.toFixed(1)}% ของจังหวัด` : ''}</p>
+          <a href={withBase('/districts')}>ดูแผนที่อำเภอ</a>
+        </article>
+        <article>
+          <span>นักเรียนน้อยที่สุด</span>
+          <strong>{leastStudents ? leastStudents.name : '—'}</strong>
+          <p>{leastStudents ? `${formatNumber(leastStudents.students)} คน · นักเรียนต่อครู ${leastStudents.studentsPerTeacher} คน` : ''}</p>
+          <a href={withBase('/districts')}>เปรียบเทียบ 16 อำเภอ</a>
+        </article>
+      </div>
+    </section>
     <PageHeader eyebrow="Provincial education intelligence" title="ภาพรวมการศึกษาจังหวัดพระนครศรีอยุธยา" description="ข้อมูลเพื่อมองเห็นขนาดระบบการศึกษา แนวโน้ม และความแตกต่างเชิงพื้นที่อย่างโปร่งใส" period={academicPeriod} status="ข้อมูลจากรายงานทางการ" />
     <section aria-label="ตัวชี้วัดหลัก" class="kpi-grid">
       <KpiCard label="สถานศึกษา" value={formatNumber(provinceSummary.schools)} unit="แห่ง" detail="ครอบคลุม 16 อำเภอ" icon="school" featured />
@@ -63,6 +103,81 @@ const districtTable = topDistricts.map((row) => ({ district: row.name, schools: 
 </DashboardLayout>
 
 <style>
+  .insight-band {
+    display: grid;
+    gap: var(--space-6);
+    padding: var(--space-8);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(135deg, var(--color-navy-950), var(--color-navy-800) 62%, #1a4d78);
+    color: var(--color-white);
+  }
+
+  .insight-band__intro p:first-child {
+    margin-bottom: var(--space-2);
+    color: var(--color-gold-500);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .insight-band h2 {
+    margin: 0;
+    color: var(--color-white);
+    font-size: var(--text-2xl);
+  }
+
+  .insight-band__intro p:last-child {
+    max-width: 46rem;
+    margin: var(--space-3) 0 0;
+    color: rgb(255 255 255 / 0.78);
+  }
+
+  .insight-band__findings {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+
+  .insight-band article {
+    padding: var(--space-5);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    border-radius: var(--radius-lg);
+    background: rgb(255 255 255 / 0.06);
+  }
+
+  .insight-band article span,
+  .insight-band article p {
+    color: rgb(255 255 255 / 0.72);
+    font-size: var(--text-xs);
+  }
+
+  .insight-band article strong {
+    display: block;
+    margin: var(--space-2) 0;
+    color: var(--color-white);
+    font-size: clamp(1.35rem, 2vw, 1.8rem);
+    letter-spacing: -0.03em;
+  }
+
+  .insight-band article p { margin: 0; }
+
+  .insight-band article a {
+    display: inline-block;
+    margin-top: var(--space-4);
+    color: #f8edda;
+    font-size: var(--text-xs);
+    font-weight: 750;
+    text-decoration: none;
+  }
+
+  .insight-band article a:hover { text-decoration: underline; text-underline-offset: 0.2rem; }
+
+  @media (max-width: 760px) {
+    .insight-band { padding: var(--space-5); }
+    .insight-band__findings { grid-template-columns: minmax(0, 1fr); }
+  }
+
   .section-heading { display:flex; justify-content:space-between; margin-bottom:var(--space-4); }
   .section-heading p { margin:0 0 var(--space-1); color:var(--color-gold-600); font-size:var(--text-xs); font-weight:800; letter-spacing:.07em; text-transform:uppercase; }
   .section-heading h2 { margin:0; font-size:var(--text-xl); }

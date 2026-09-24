@@ -1,20 +1,26 @@
 import { useEffect, useRef } from 'react';
 import * as echarts from 'echarts/core';
-import { BarChart, LineChart, PieChart } from 'echarts/charts';
-import { AriaComponent, GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
+import { BarChart, LineChart, MapChart, PieChart } from 'echarts/charts';
+import { AriaComponent, GeoComponent, GridComponent, LegendComponent, TooltipComponent, VisualMapComponent } from 'echarts/components';
 import { SVGRenderer } from 'echarts/renderers';
 import type { EChartsOption } from 'echarts';
+import ayutthayaDistricts from '../../data/ayutthaya-districts.geo.json';
 
 echarts.use([
   BarChart,
   LineChart,
+  MapChart,
   PieChart,
   AriaComponent,
+  GeoComponent,
   GridComponent,
   LegendComponent,
   TooltipComponent,
+  VisualMapComponent,
   SVGRenderer,
 ]);
+
+echarts.registerMap('ayutthaya', ayutthayaDistricts as never);
 
 interface Props {
   option: EChartsOption;

@@ -8,10 +8,16 @@ import SectionCard from '../components/dashboard/SectionCard.astro';
 import DataTable from '../components/data-display/DataTable.astro';
 import SourceNote from '../components/data-display/SourceNote.astro';
 import EChart from '../components/charts/EChart';
-import { barOption, groupedBarOption } from '../lib/chart-options';
-import { academicPeriod, districtRows, formatNumber, sourceLabel } from '../data/fixtures';
+import { barOption, districtMapOption, groupedBarOption } from '../lib/chart-options';
+import { academicPeriod, districtRows, formatNumber, provinceSummary, sourceLabel } from '../data/fixtures';
 
 const sorted = [...districtRows].sort((a, b) => b.students - a.students);
+const mostStudents = sorted[0];
+const leastStudents = sorted.at(-1);
+const largestShare = mostStudents ? (mostStudents.students / provinceSummary.students) * 100 : 0;
+const districtSummary = mostStudents && leastStudents
+  ? `อำเภอ${mostStudents.name}มีนักเรียน ${formatNumber(mostStudents.students)} คน คิดเป็น ${largestShare.toFixed(1)}% ของจังหวัด ขณะที่อำเภอ${leastStudents.name}มีน้อยที่สุด ${formatNumber(leastStudents.students)} คน`
+  : 'เปรียบเทียบจำนวนนักเรียนทั้ง 16 อำเภอ';
 const columns = [
   { key: 'code', label: 'รหัส' }, { key: 'district', label: 'อำเภอ' },
   { key: 'schools', label: 'สถานศึกษา', align: 'right' as const }, { key: 'classrooms', label: 'ห้องเรียน', align: 'right' as const },
@@ -31,6 +37,9 @@ const rows = districtRows.map((row) => ({ code: row.id, district: row.name, scho
       <KpiCard label="นักเรียนต่อห้องสูงสุด" value="28 : 1" detail="พระนครศรีอยุธยา" icon="school" />
       <KpiCard label="นักเรียนน้อยที่สุด" value="708" unit="คน" detail="บ้านแพรก" icon="students" />
     </section>
+    <ChartPanel title="แผนที่นักเรียนรายอำเภอ" description={districtSummary} height={520}>
+      <EChart client:visible height={500} option={districtMapOption(districtRows)} label="แผนที่จำนวนนักเรียน 16 อำเภอในจังหวัดพระนครศรีอยุธยา สีเข้มหมายถึงนักเรียนมากกว่า" />
+    </ChartPanel>
     <div class="content-grid">
       <ChartPanel title="จำนวนนักเรียนรายอำเภอ" description="เรียงจากมากไปน้อย" height={560}>
         <EChart client:visible height={540} option={barOption(sorted.map((item) => item.name), sorted.map((item) => item.students), 'นักเรียน', { horizontal: true, gridLeft: 108 })} label="กราฟเปรียบเทียบจำนวนนักเรียน 16 อำเภอ" />
