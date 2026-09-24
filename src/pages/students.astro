@@ -8,7 +8,7 @@ import SectionCard from '../components/dashboard/SectionCard.astro';
 import DataTable from '../components/data-display/DataTable.astro';
 import SourceNote from '../components/data-display/SourceNote.astro';
 import EChart from '../components/charts/EChart';
-import { groupedBarOption, lineOption } from '../lib/chart-options';
+import { femaleSeriesColor, groupedBarOption, lineOption } from '../lib/chart-options';
 import { academicPeriod, formatNumber, sourceLabel, studentGrades, studentLevels, studentTrend } from '../data/fixtures';
 
 const totalMale = studentLevels.reduce((sum, item) => sum + item.male, 0);
@@ -25,11 +25,11 @@ const rows = studentGrades.map((item) => ({ grade: item.label, male: formatNumbe
       <KpiCard label="นักเรียนทั้งหมด" value="115,123" unit="คน" detail="ทุกสังกัด" icon="students" featured />
       <KpiCard label="นักเรียนชาย" value={formatNumber(totalMale)} unit="คน" detail="50.4% ของทั้งหมด" icon="students" />
       <KpiCard label="นักเรียนหญิง" value={formatNumber(totalFemale)} unit="คน" detail="49.6% ของทั้งหมด" icon="students" />
-      <KpiCard label="เปลี่ยนแปลงจากปีก่อน" value="−4.2%" detail="จาก 120,206 คนในปี 2566" trend="ลดลง 5,083 คน" trendDirection="down" icon="trend" />
+      <KpiCard label="เปลี่ยนแปลงจากปีก่อน" value="−4.2%" detail="ค่าคำนวณจาก 120,206 คนในปี 2566" trend="ลดลง 5,083 คน" trendDirection="down" icon="trend" />
     </section>
     <div class="content-grid">
       <ChartPanel title="โครงสร้างนักเรียนตามระดับและเพศ" description="เปรียบเทียบจำนวนนักเรียนชายและหญิง" height={360}>
-        <EChart client:visible option={groupedBarOption(studentLevels.map((item) => item.label), [{ name: 'ชาย', data: studentLevels.map((item) => item.male) }, { name: 'หญิง', data: studentLevels.map((item) => item.female), color: '#bd8422' }])} label="กราฟจำนวนนักเรียนชายหญิงแยกตามระดับการศึกษา" />
+        <EChart client:visible option={groupedBarOption(studentLevels.map((item) => item.label), [{ name: 'ชาย', data: studentLevels.map((item) => item.male) }, { name: 'หญิง', data: studentLevels.map((item) => item.female), color: femaleSeriesColor }])} label="กราฟจำนวนนักเรียนชายหญิงแยกตามระดับการศึกษา" />
       </ChartPanel>
       <ChartPanel title="แนวโน้มนักเรียน 5 ปี" description="ปีการศึกษา 2563–2567" height={360}>
         <EChart client:visible option={lineOption(studentTrend.map((item) => item.year), studentTrend.map((item) => item.total), 'นักเรียน')} label="กราฟแนวโน้มจำนวนนักเรียนห้าปี" />

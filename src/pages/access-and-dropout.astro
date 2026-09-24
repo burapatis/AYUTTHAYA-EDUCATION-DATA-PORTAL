@@ -22,7 +22,7 @@ const rows = dropoutCauses.map((item) => ({ cause: item.label, students: formatN
     <PageHeader eyebrow="Participation and retention" title="การเข้าถึงและออกกลางคัน" description="ติดตามสัญญาณการหลุดออกจากระบบ เพื่อช่วยกำหนดมาตรการเชิงป้องกัน" period="ปีการศึกษา 2558–2567" status="ข้อมูลจากรายงานทางการ" />
     <section aria-label="ตัวชี้วัดการออกกลางคัน" class="kpi-grid">
       <KpiCard label="ออกกลางคัน ปี 2567" value="110" unit="คน" detail="รวมทุกสาเหตุที่รายงาน" icon="trend" featured />
-      <KpiCard label="เปลี่ยนแปลงจากปีก่อน" value="−28.6%" detail="ลดลงจาก 154 คน" trend="ลดลง 44 คน" trendDirection="up" icon="trend" />
+      <KpiCard label="เปลี่ยนแปลงจากปีก่อน" value="−28.6%" detail="ค่าคำนวณ: ลดลงจาก 154 คน" trend="ลดลง 44 คน" trendDirection="up" icon="trend" />
       <KpiCard label="สูงสุดในช่วงข้อมูล" value="240" unit="คน" detail="ปีการศึกษา 2565" icon="students" />
       <KpiCard label="อพยพตามครอบครัว" value="77" unit="คน" detail="70% ของกรณีทั้งหมด" icon="districts" />
     </section>
@@ -32,7 +32,7 @@ const rows = dropoutCauses.map((item) => ({ cause: item.label, students: formatN
         <EChart client:visible option={lineOption(dropoutTrend.map((item) => item.year), dropoutTrend.map((item) => item.value), 'นักเรียนออกกลางคัน')} label="กราฟแนวโน้มจำนวนนักเรียนออกกลางคัน" />
       </ChartPanel>
       <ChartPanel title="สาเหตุการออกกลางคัน" description="จำนวนกรณีตามสาเหตุในตารางล่าสุด" height={360}>
-        <EChart client:visible option={barOption(dropoutCauses.map((item) => item.label), dropoutCauses.map((item) => item.value), 'นักเรียน', { horizontal: true, color: '#bd8422', gridLeft: 120 })} label="กราฟสาเหตุการออกกลางคัน" />
+        <EChart client:visible option={barOption(dropoutCauses.map((item) => item.label), dropoutCauses.map((item) => item.value), 'นักเรียน', { horizontal: true, gridLeft: 120 })} label="กราฟสาเหตุการออกกลางคัน" />
       </ChartPanel>
     </div>
     <SectionCard title="รายละเอียดสาเหตุที่รายงาน" description="สัดส่วนคำนวณเทียบกับยอดรวม 110 คน">

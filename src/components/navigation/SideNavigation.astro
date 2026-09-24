@@ -7,18 +7,36 @@ interface Props {
 }
 
 const { activePath = '/' } = Astro.props;
-const items = [
-  { href: '/', label: 'ภาพรวม', icon: 'overview' },
-  { href: '/districts', label: 'เปรียบเทียบรายอำเภอ', icon: 'districts' },
-  { href: '/schools', label: 'โรงเรียนและห้องเรียน', icon: 'school' },
-  { href: '/students', label: 'นักเรียน', icon: 'students' },
-  { href: '/teachers', label: 'ครูและบุคลากร', icon: 'teachers' },
-  { href: '/access-and-dropout', label: 'การเข้าถึงและออกกลางคัน', icon: 'trend' },
-  { href: '/higher-education', label: 'อาชีวะและอุดมศึกษา', icon: 'graduate' },
-  { href: '/lifelong-learning', label: 'การเรียนรู้ตลอดชีวิต', icon: 'learning' },
-  { href: '/local-education', label: 'การศึกษาสังกัดท้องถิ่น', icon: 'school' },
-  { href: '/data', label: 'ชุดข้อมูลและดาวน์โหลด', icon: 'database' },
-  { href: '/definitions', label: 'นิยามข้อมูล', icon: 'info' },
+const groups = [
+  {
+    label: 'ภาพรวม',
+    items: [{ href: '/', label: 'ภาพรวม', icon: 'overview' }],
+  },
+  {
+    label: 'ผู้เรียนและครู',
+    items: [
+      { href: '/students', label: 'นักเรียน', icon: 'students' },
+      { href: '/teachers', label: 'ครูและบุคลากร', icon: 'teachers' },
+      { href: '/access-and-dropout', label: 'การเข้าถึงและออกกลางคัน', icon: 'trend' },
+      { href: '/higher-education', label: 'อาชีวะและอุดมศึกษา', icon: 'graduate' },
+      { href: '/lifelong-learning', label: 'การเรียนรู้ตลอดชีวิต', icon: 'learning' },
+    ],
+  },
+  {
+    label: 'พื้นที่และสังกัด',
+    items: [
+      { href: '/districts', label: 'เปรียบเทียบรายอำเภอ', icon: 'districts' },
+      { href: '/schools', label: 'โรงเรียนและห้องเรียน', icon: 'school' },
+      { href: '/local-education', label: 'การศึกษาสังกัดท้องถิ่น', icon: 'local' },
+    ],
+  },
+  {
+    label: 'ข้อมูลเปิด',
+    items: [
+      { href: '/data', label: 'ชุดข้อมูลและดาวน์โหลด', icon: 'database' },
+      { href: '/definitions', label: 'นิยามข้อมูล', icon: 'info' },
+    ],
+  },
 ] as const;
 ---
 
@@ -28,19 +46,24 @@ const items = [
     <button type="button" aria-label="ปิดเมนูหลัก" data-sidebar-close><Icon name="close" size={20} /></button>
   </div>
   <nav>
-    <ul>
-      {items.map((item) => {
-        const active = activePath === item.href;
-        return (
-          <li>
-            <a href={withBase(item.href)} aria-current={active ? 'page' : undefined} class:list={{ active }}>
-              <Icon name={item.icon} size={19} />
-              <span>{item.label}</span>
-            </a>
-          </li>
-        );
-      })}
-    </ul>
+    {groups.map((group) => (
+      <div class="sidebar__group">
+        <p>{group.label}</p>
+        <ul>
+          {group.items.map((item) => {
+            const active = activePath === item.href;
+            return (
+              <li>
+                <a href={withBase(item.href)} aria-current={active ? 'page' : undefined} class:list={{ active }}>
+                  <Icon name={item.icon} size={19} />
+                  <span>{item.label}</span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    ))}
   </nav>
   <div class="sidebar__trust">
     <span class="sidebar__trust-mark"><Icon name="check" size={16} /></span>
@@ -105,6 +128,19 @@ const items = [
     border: 0;
     background: transparent;
     color: var(--color-slate-700);
+  }
+
+  .sidebar__group + .sidebar__group {
+    margin-top: var(--space-4);
+  }
+
+  .sidebar__group p {
+    margin: 0 0 var(--space-2);
+    padding-inline: var(--space-3);
+    color: var(--color-slate-500);
+    font-size: 0.68rem;
+    font-weight: 750;
+    letter-spacing: 0.06em;
   }
 
   ul {

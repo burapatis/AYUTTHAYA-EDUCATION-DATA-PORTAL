@@ -8,7 +8,7 @@ import SectionCard from '../components/dashboard/SectionCard.astro';
 import DataTable from '../components/data-display/DataTable.astro';
 import SourceNote from '../components/data-display/SourceNote.astro';
 import EChart from '../components/charts/EChart';
-import { barOption, groupedBarOption } from '../lib/chart-options';
+import { barOption, femaleSeriesColor, groupedBarOption } from '../lib/chart-options';
 import { academicPeriod, formatNumber, postsecondary, sourceLabel } from '../data/fixtures';
 
 const totals = postsecondary.reduce((acc, item) => ({ institutions: acc.institutions + item.institutions, lecturers: acc.lecturers + item.lecturers, students: acc.students + item.students }), { institutions: 0, lecturers: 0, students: 0 });
@@ -31,7 +31,7 @@ const rows = postsecondary.map((item) => ({ system: item.label, institutions: fo
         <EChart client:visible option={barOption(postsecondary.map((item) => item.label), postsecondary.map((item) => item.students), 'ผู้เรียน')} label="กราฟเปรียบเทียบผู้เรียนอาชีวศึกษาและอุดมศึกษา" />
       </ChartPanel>
       <ChartPanel title="โครงสร้างผู้เรียนตามเพศ" description="จำนวนชายและหญิงในแต่ละระบบ" height={340}>
-        <EChart client:visible option={groupedBarOption(postsecondary.map((item) => item.label), [{ name: 'ชาย', data: postsecondary.map((item) => item.maleStudents) }, { name: 'หญิง', data: postsecondary.map((item) => item.femaleStudents), color: '#bd8422' }])} label="กราฟผู้เรียนชายหญิงในอาชีวศึกษาและอุดมศึกษา" />
+        <EChart client:visible option={groupedBarOption(postsecondary.map((item) => item.label), [{ name: 'ชาย', data: postsecondary.map((item) => item.maleStudents) }, { name: 'หญิง', data: postsecondary.map((item) => item.femaleStudents), color: femaleSeriesColor }])} label="กราฟผู้เรียนชายหญิงในอาชีวศึกษาและอุดมศึกษา" />
       </ChartPanel>
     </div>
     <SectionCard title="ข้อมูลระบบการศึกษาหลังระดับพื้นฐาน" description="แสดงองค์ประกอบหลักของแต่ละระบบ">

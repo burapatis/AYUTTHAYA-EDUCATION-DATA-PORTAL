@@ -10,9 +10,32 @@ interface Props {
   columns: Column[];
   rows: Array<Record<string, string | number>>;
   compact?: boolean;
+  meterKey?: string;
+  markExtremes?: boolean;
 }
 
-const { caption, columns, rows, compact = false } = Astro.props;
+const { caption, columns, rows, compact = false, meterKey, markExtremes = false } = Astro.props;
+
+const parseMetric = (value: string | number) => {
+  if (typeof value === 'number') return value;
+  const normalized = value.replace(/,/g, '').trim();
+  return /^[\d.]+$/.test(normalized) ? Number(normalized) : null;
+};
+
+const meterValues = meterKey ? rows.map((row) => parseMetric(row[meterKey] ?? '')).filter((value): value is number => value !== null) : [];
+const meterMax = meterValues.length ? Math.max(...meterValues) : 0;
+const meterMin = meterValues.length ? Math.min(...meterValues) : 0;
+const maximumIsUnique = meterValues.filter((value) => value === meterMax).length === 1;
+const minimumIsUnique = meterValues.filter((value) => value === meterMin).length === 1;
+const tableRows = rows.map((row) => {
+  const metric = meterKey ? parseMetric(row[meterKey] ?? '') : null;
+  return {
+    row,
+    isMax: markExtremes && metric !== null && metric === meterMax && maximumIsUnique,
+    isMin: markExtremes && metric !== null && metric === meterMin && minimumIsUnique && meterMax !== meterMin,
+    meterWidth: metric !== null && meterMax > 0 ? (metric / meterMax) * 100 : null,
+  };
+});
 ---
 
 <div class="table-scroll" tabindex="0" role="region" aria-label={caption}>
@@ -24,11 +47,16 @@ const { caption, columns, rows, compact = false } = Astro.props;
       </tr>
     </thead>
     <tbody>
-      {rows.map((row) => (
-        <tr>
+      {tableRows.map(({ row, isMax, isMin, meterWidth }) => (
+        <tr class:list={{ 'is-max': isMax, 'is-min': isMin }}>
           {columns.map((column, index) => (
             <td class={`align-${column.align ?? 'left'}`} data-label={column.label}>
-              {index === 0 ? <strong>{row[column.key]}</strong> : row[column.key]}
+              {column.key === meterKey && meterWidth !== null ? (
+                <span class="cell-meter">
+                  <span class="cell-meter__track" aria-hidden="true"><span style={`width: ${meterWidth}%`}></span></span>
+                  <span>{index === 0 ? <strong>{row[column.key]}</strong> : row[column.key]}</span>
+                </span>
+              ) : index === 0 ? <strong>{row[column.key]}</strong> : row[column.key]}
             </td>
           ))}
         </tr>
@@ -76,6 +104,32 @@ const { caption, columns, rows, compact = false } = Astro.props;
   tbody tr:hover {
     background: #fafcfd;
   }
+
+  tbody tr.is-max { background: var(--color-gold-100); }
+  tbody tr.is-min { background: var(--color-blue-100); }
+
+  .cell-meter {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-2);
+  }
+
+  .cell-meter__track {
+    width: 4.5rem;
+    height: 0.35rem;
+    border-radius: 99px;
+    background: var(--color-slate-100);
+  }
+
+  .cell-meter__track span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--color-navy-800);
+  }
+
+  tr.is-max .cell-meter__track span { background: var(--color-gold-600); }
 
   td strong {
     color: var(--color-navy-900);

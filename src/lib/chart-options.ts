@@ -1,6 +1,8 @@
 import type { EChartsOption } from 'echarts';
 
-export const chartColors = ['#1769aa', '#bd8422', '#236b70', '#7c5aa6', '#758ca3', '#a75151'];
+export const chartColors = ['#1769aa', '#236b70', '#7c5aa6', '#758ca3', '#a75151', '#1a4d78'];
+export const femaleSeriesColor = '#236b70';
+const extremeColor = '#bd8422';
 
 const axisLabel = {
   color: '#64758a',
@@ -24,13 +26,17 @@ const base: EChartsOption = {
   aria: { enabled: true },
 };
 
+const formatCount = (value: number) => new Intl.NumberFormat('th-TH').format(value);
+
 export function barOption(
   categories: string[],
   values: number[],
   seriesName: string,
-  options: { horizontal?: boolean; color?: string; unit?: string; gridLeft?: number } = {},
+  options: { horizontal?: boolean; color?: string; unit?: string; gridLeft?: number; highlightExtremes?: boolean } = {},
 ): EChartsOption {
-  const { horizontal = false, color = chartColors[0], unit = 'คน', gridLeft = horizontal ? 92 : 48 } = options;
+  const { horizontal = false, color = chartColors[0], unit = 'คน', gridLeft = horizontal ? 92 : 48, highlightExtremes = false } = options;
+  const maximum = Math.max(...values);
+  const minimum = Math.min(...values);
   const categoryAxis = {
     type: 'category' as const,
     data: categories,
@@ -45,18 +51,39 @@ export function barOption(
     axisLabel,
     splitLine: { lineStyle: { color: '#e8edf1' } },
   };
+  const data = values.map((value) => {
+    const isMaximum = highlightExtremes && value === maximum && maximum !== minimum;
+    const isMinimum = highlightExtremes && value === minimum && maximum !== minimum;
+    return {
+      value,
+      itemStyle: {
+        color: isMaximum ? extremeColor : isMinimum ? '#f8edda' : color,
+        borderColor: isMinimum ? extremeColor : 'transparent',
+        borderWidth: isMinimum ? 1.5 : 0,
+        borderRadius: horizontal ? [0, 4, 4, 0] : [4, 4, 0, 0],
+      },
+    };
+  });
 
   return {
     ...base,
-    grid: { top: 24, right: 24, bottom: horizontal ? 28 : 58, left: gridLeft, containLabel: true },
+    grid: { top: horizontal ? 16 : 36, right: horizontal ? 72 : 16, bottom: horizontal ? 28 : 58, left: gridLeft, containLabel: true },
     xAxis: horizontal ? valueAxis : categoryAxis,
     yAxis: horizontal ? categoryAxis : valueAxis,
     series: [{
       name: seriesName,
       type: 'bar',
-      data: values,
+      data,
       barMaxWidth: 28,
-      itemStyle: { color, borderRadius: horizontal ? [0, 4, 4, 0] : [4, 4, 0, 0] },
+      label: {
+        show: true,
+        position: horizontal ? 'right' : 'top',
+        formatter: (item) => formatCount(Number(item.value ?? 0)),
+        color: '#344354',
+        fontSize: 10,
+        fontFamily: axisLabel.fontFamily,
+      },
+      labelLayout: { hideOverlap: true },
     }],
   };
 }
@@ -69,7 +96,7 @@ export function groupedBarOption(
   return {
     ...base,
     legend: { bottom: 0, icon: 'circle', textStyle: axisLabel },
-    grid: { top: 20, right: 24, bottom: 58, left: 54, containLabel: true },
+    grid: { top: 36, right: 16, bottom: 58, left: 54, containLabel: true },
     xAxis: {
       type: 'category',
       data: categories,
@@ -90,6 +117,15 @@ export function groupedBarOption(
       data: item.data,
       barMaxWidth: 28,
       itemStyle: { color: item.color ?? chartColors[index], borderRadius: [4, 4, 0, 0] },
+      label: {
+        show: categories.length <= 8,
+        position: 'top',
+        formatter: (point) => formatCount(Number(point.value ?? 0)),
+        color: '#344354',
+        fontSize: 10,
+        fontFamily: axisLabel.fontFamily,
+      },
+      labelLayout: { hideOverlap: true },
     })),
   };
 }
@@ -102,7 +138,7 @@ export function lineOption(
 ): EChartsOption {
   return {
     ...base,
-    grid: { top: 24, right: 24, bottom: 34, left: 54, containLabel: true },
+    grid: { top: 24, right: 72, bottom: 34, left: 54, containLabel: true },
     xAxis: {
       type: 'category',
       boundaryGap: false,
@@ -128,6 +164,14 @@ export function lineOption(
       lineStyle: { color: chartColors[0], width: 3 },
       itemStyle: { color: chartColors[0], borderColor: '#fff', borderWidth: 2 },
       areaStyle: { color: 'rgba(23, 105, 170, 0.10)' },
+      endLabel: {
+        show: true,
+        formatter: (item) => formatCount(Number(item.value ?? 0)),
+        color: '#0b2542',
+        fontSize: 11,
+        fontWeight: 700,
+        fontFamily: axisLabel.fontFamily,
+      },
     }],
   };
 }

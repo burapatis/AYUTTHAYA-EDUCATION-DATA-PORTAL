@@ -11,7 +11,7 @@ import SourceNote from '../components/data-display/SourceNote.astro';
 import EChart from '../components/charts/EChart';
 import { barOption, lineOption } from '../lib/chart-options';
 import { withBase } from '../lib/site';
-import { academicPeriod, districtRows, formatNumber, provinceSummary, sourceLabel, studentLevels, studentTrend } from '../data/fixtures';
+import { academicPeriod, districtRows, formatNumber, provinceSummary, sourceLabel, studentLevels, studentTrend, teacherTrend } from '../data/fixtures';
 
 const topDistricts = [...districtRows].sort((a, b) => b.students - a.students).slice(0, 5);
 const mostStudents = topDistricts[0];
@@ -22,6 +22,11 @@ const studentChangePercent = previousStudents && latestStudents
   ? ((latestStudents.total - previousStudents.total) / previousStudents.total) * 100
   : 0;
 const largestShare = mostStudents ? (mostStudents.students / provinceSummary.students) * 100 : 0;
+const previousTeachers = teacherTrend.at(-2);
+const latestTeachers = teacherTrend.at(-1);
+const teacherChangePercent = previousTeachers && latestTeachers
+  ? ((latestTeachers.total - previousTeachers.total) / previousTeachers.total) * 100
+  : 0;
 const districtColumns = [
   { key: 'district', label: 'อำเภอ' },
   { key: 'schools', label: 'สถานศึกษา', align: 'right' as const },
@@ -67,10 +72,10 @@ const districtTable = topDistricts.map((row) => ({ district: row.name, schools: 
     </section>
     <PageHeader eyebrow="Provincial education intelligence" title="ภาพรวมการศึกษาจังหวัดพระนครศรีอยุธยา" description="ข้อมูลเพื่อมองเห็นขนาดระบบการศึกษา แนวโน้ม และความแตกต่างเชิงพื้นที่อย่างโปร่งใส" period={academicPeriod} status="ข้อมูลจากรายงานทางการ" />
     <section aria-label="ตัวชี้วัดหลัก" class="kpi-grid">
-      <KpiCard label="สถานศึกษา" value={formatNumber(provinceSummary.schools)} unit="แห่ง" detail="ครอบคลุม 16 อำเภอ" icon="school" featured />
-      <KpiCard label="ห้องเรียน" value={formatNumber(provinceSummary.classrooms)} unit="ห้อง" detail="ทุกสังกัด" icon="trend" />
-      <KpiCard label="ครู" value={formatNumber(provinceSummary.teachers)} unit="คน" detail="เฉลี่ยนักเรียน 16 คนต่อครู" icon="teachers" />
-      <KpiCard label="นักเรียน" value={formatNumber(provinceSummary.students)} unit="คน" detail="ปีการศึกษา 2567" trend="ลดลง 4.2% จากปีก่อน" trendDirection="down" icon="students" />
+      <KpiCard label="สถานศึกษา" value={formatNumber(provinceSummary.schools)} unit="แห่ง" detail="ครอบคลุม 16 อำเภอ" icon="school" featured href="/schools" />
+      <KpiCard label="ห้องเรียน" value={formatNumber(provinceSummary.classrooms)} unit="ห้อง" detail="ทุกสังกัด" icon="trend" href="/schools" />
+      <KpiCard label="ครู" value={formatNumber(provinceSummary.teachers)} unit="คน" detail="เฉลี่ยนักเรียน 16 คนต่อครู" icon="teachers" href="/teachers" trend={teacherChangePercent < 0 ? `ค่าคำนวณ: ลดลง ${Math.abs(teacherChangePercent).toFixed(1)}% จากปีก่อน` : `ค่าคำนวณ: เพิ่ม ${teacherChangePercent.toFixed(1)}% จากปีก่อน`} trendDirection={teacherChangePercent < 0 ? 'down' : teacherChangePercent > 0 ? 'up' : 'neutral'} />
+      <KpiCard label="นักเรียน" value={formatNumber(provinceSummary.students)} unit="คน" detail="ปีการศึกษา 2567" trend="ค่าคำนวณ: ลดลง 4.2% จากปีก่อน" trendDirection="down" icon="students" href="/students" />
     </section>
     <div class="content-grid">
       <ChartPanel title="แนวโน้มจำนวนนักเรียน" description="จำนวนนักเรียนทุกสังกัด ปีการศึกษา 2563–2567" height={330}>
@@ -91,12 +96,12 @@ const districtTable = topDistricts.map((row) => ({ district: row.name, schools: 
         <NavigationCard href="/access-and-dropout" title="การเข้าถึงและออกกลางคัน" description="ติดตามแนวโน้มและสาเหตุที่รายงาน" icon="trend" />
         <NavigationCard href="/higher-education" title="อาชีวะและอุดมศึกษา" description="ภาพรวมสถาบัน อาจารย์ และผู้เรียนหลังการศึกษาขั้นพื้นฐาน" icon="graduate" />
         <NavigationCard href="/lifelong-learning" title="การเรียนรู้ตลอดชีวิต" description="กิจกรรมการศึกษานอกระบบและการพัฒนาทักษะ" icon="learning" />
-        <NavigationCard href="/local-education" eyebrow="Local administration" title="การศึกษาสังกัดท้องถิ่น" description="ดูสถานศึกษา ห้องเรียน ครู และนักเรียนของกลุ่มสังกัด อปท. รายอำเภอ" icon="school" />
+        <NavigationCard href="/local-education" eyebrow="Local administration" title="การศึกษาสังกัดท้องถิ่น" description="ดูสถานศึกษา ห้องเรียน ครู และนักเรียนของกลุ่มสังกัด อปท. รายอำเภอ" icon="local" />
         <NavigationCard href="/definitions" eyebrow="Data dictionary" title="นิยามข้อมูล" description="ตรวจความหมาย หน่วย สูตร และเงื่อนไขก่อนนำข้อมูลไปเปรียบเทียบ" icon="info" />
       </div>
     </section>
     <SectionCard title="อำเภอที่มีนักเรียนมากที่สุด" description="ห้าอันดับแรกจากข้อมูลรายอำเภอ ปีการศึกษา 2567">
-      <DataTable caption="อำเภอที่มีนักเรียนมากที่สุด" columns={districtColumns} rows={districtTable} />
+      <DataTable caption="อำเภอที่มีนักเรียนมากที่สุด" columns={districtColumns} rows={districtTable} meterKey="students" />
     </SectionCard>
     <SourceNote source={sourceLabel} period={academicPeriod} table="ตาราง 3.1–3.9 และ 7.4" note="ค่าทั้งหมดถอดจากรายงานต้นทาง; รายละเอียดโครงสร้างไฟล์ข้อมูลจะจัดทำใน Step 6" />
   </div>

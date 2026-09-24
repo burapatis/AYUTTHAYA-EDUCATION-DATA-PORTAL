@@ -8,13 +8,17 @@ import SectionCard from '../components/dashboard/SectionCard.astro';
 import DataTable from '../components/data-display/DataTable.astro';
 import SourceNote from '../components/data-display/SourceNote.astro';
 import EChart from '../components/charts/EChart';
-import { donutOption, groupedBarOption, lineOption } from '../lib/chart-options';
+import { donutOption, femaleSeriesColor, groupedBarOption, lineOption } from '../lib/chart-options';
 import { academicPeriod, formatNumber, sourceLabel, teacherLevels, teacherQualifications, teacherTrend } from '../data/fixtures';
 
 const totalMale = teacherLevels.reduce((sum, item) => sum + item.male, 0);
 const totalFemale = teacherLevels.reduce((sum, item) => sum + item.female, 0);
 const columns = [{ key: 'level', label: 'ระดับที่สอน' }, { key: 'male', label: 'ชาย', align: 'right' as const }, { key: 'female', label: 'หญิง', align: 'right' as const }, { key: 'total', label: 'รวม', align: 'right' as const }];
 const rows = teacherLevels.map((item) => ({ level: item.label, male: formatNumber(item.male), female: formatNumber(item.female), total: formatNumber(item.total) }));
+const previousTeachers = teacherTrend.at(-2);
+const latestTeachers = teacherTrend.at(-1);
+const teacherChangePercent = previousTeachers && latestTeachers ? ((latestTeachers.total - previousTeachers.total) / previousTeachers.total) * 100 : 0;
+const teacherChangeCount = previousTeachers && latestTeachers ? latestTeachers.total - previousTeachers.total : 0;
 ---
 
 <DashboardLayout title="ครูและบุคลากร · ศูนย์ข้อมูลการศึกษาอยุธยา" activePath="/teachers">
@@ -22,17 +26,17 @@ const rows = teacherLevels.map((item) => ({ level: item.label, male: formatNumbe
   <div class="page-stack">
     <PageHeader eyebrow="Education workforce" title="ครูและบุคลากร" description="ภาพรวมกำลังคน คุณวุฒิ และระดับการสอน เพื่อสนับสนุนการวางแผนทรัพยากร" period={academicPeriod} status="ข้อมูลจากรายงานทางการ" />
     <section aria-label="ตัวชี้วัดครู" class="kpi-grid">
-      <KpiCard label="ครูทั้งหมด" value="7,358" unit="คน" detail="ทุกระดับการศึกษา" icon="teachers" featured />
+      <KpiCard label="ครูทั้งหมด" value="7,358" unit="คน" detail="ทุกระดับการศึกษา" icon="teachers" featured trend={previousTeachers ? `ค่าคำนวณ: ${teacherChangeCount < 0 ? 'ลดลง' : 'เพิ่ม'} ${formatNumber(Math.abs(teacherChangeCount))} คนจากปี ${previousTeachers.year}` : undefined} trendDirection={teacherChangePercent < 0 ? 'down' : teacherChangePercent > 0 ? 'up' : 'neutral'} />
       <KpiCard label="ครูหญิง" value={formatNumber(totalFemale)} unit="คน" detail="75.1% ของครูทั้งหมด" icon="teachers" />
       <KpiCard label="ครูชาย" value={formatNumber(totalMale)} unit="คน" detail="24.9% ของครูทั้งหมด" icon="teachers" />
-      <KpiCard label="นักเรียนต่อครู" value="16 : 1" detail="อัตราส่วนระดับจังหวัด" icon="students" />
+      <KpiCard label="นักเรียนต่อครู" value="16 : 1" detail="อัตราส่วนระดับจังหวัด" icon="students" href="/students" />
     </section>
     <div class="content-grid">
       <ChartPanel title="คุณวุฒิครู" description="จำนวนครูจำแนกตามวุฒิการศึกษาสูงสุด" height={360}>
         <EChart client:visible option={donutOption(teacherQualifications.map((item) => ({ name: item.label, value: item.value })))} label="แผนภูมิวงแหวนคุณวุฒิครู" />
       </ChartPanel>
       <ChartPanel title="ครูตามระดับที่สอนและเพศ" description="เปรียบเทียบองค์ประกอบกำลังคน" height={360}>
-        <EChart client:visible option={groupedBarOption(teacherLevels.map((item) => item.label), [{ name: 'ชาย', data: teacherLevels.map((item) => item.male) }, { name: 'หญิง', data: teacherLevels.map((item) => item.female), color: '#bd8422' }])} label="กราฟครูชายหญิงแยกตามระดับที่สอน" />
+        <EChart client:visible option={groupedBarOption(teacherLevels.map((item) => item.label), [{ name: 'ชาย', data: teacherLevels.map((item) => item.male) }, { name: 'หญิง', data: teacherLevels.map((item) => item.female), color: femaleSeriesColor }])} label="กราฟครูชายหญิงแยกตามระดับที่สอน" />
       </ChartPanel>
     </div>
     <ChartPanel title="แนวโน้มจำนวนครู 5 ปี" description="ปีการศึกษา 2563–2567" height={320}>

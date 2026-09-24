@@ -33,8 +33,8 @@ const rows = districtRows.map((row) => ({ district: row.name, schools: formatNum
         <EChart client:visible option={barOption(jurisdictions.map((item) => item.shortLabel), jurisdictions.map((item) => item.classrooms), 'ห้องเรียน', { color: '#236b70', unit: 'ห้อง' })} label="กราฟจำนวนห้องเรียนแยกตามสังกัด" />
       </ChartPanel>
     </div>
-    <SectionCard title="สถานศึกษาและห้องเรียนรายอำเภอ" description="ค่าเฉลี่ยห้องต่อสถานศึกษาคำนวณจากจำนวนห้องเรียนหารด้วยจำนวนสถานศึกษา">
-      <DataTable caption="สถานศึกษาและห้องเรียนรายอำเภอ" columns={columns} rows={rows} compact />
+    <SectionCard title="สถานศึกษาและห้องเรียนรายอำเภอ" description="ค่าเฉลี่ยห้องต่อสถานศึกษาคำนวณจากจำนวนห้องเรียนหารด้วยจำนวนสถานศึกษา แถบเทียบจำนวนสถานศึกษาในแถวนั้น">
+      <DataTable caption="สถานศึกษาและห้องเรียนรายอำเภอ" columns={columns} rows={rows} compact meterKey="schools" markExtremes />
     </SectionCard>
     <SourceNote source={sourceLabel} period={academicPeriod} table="ตาราง 3.1–3.2" note="คำว่า “สถานศึกษา” ครอบคลุมหน่วยงานตามนิยามของตารางต้นทาง" />
   </div>

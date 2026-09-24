@@ -41,15 +41,15 @@ const rows = districtRows.map((row) => ({ code: row.id, district: row.name, scho
       <EChart client:visible height={500} option={districtMapOption(districtRows)} label="แผนที่จำนวนนักเรียน 16 อำเภอในจังหวัดพระนครศรีอยุธยา สีเข้มหมายถึงนักเรียนมากกว่า" />
     </ChartPanel>
     <div class="content-grid">
-      <ChartPanel title="จำนวนนักเรียนรายอำเภอ" description="เรียงจากมากไปน้อย" height={560}>
-        <EChart client:visible height={540} option={barOption(sorted.map((item) => item.name), sorted.map((item) => item.students), 'นักเรียน', { horizontal: true, gridLeft: 108 })} label="กราฟเปรียบเทียบจำนวนนักเรียน 16 อำเภอ" />
+      <ChartPanel title="จำนวนนักเรียนรายอำเภอ" description="เรียงจากมากไปน้อย แท่งสีทองคืออำเภอที่มีนักเรียนมากที่สุด และแท่งขอบทองคืออำเภอที่มีน้อยที่สุด" height={560}>
+        <EChart client:visible height={540} option={barOption(sorted.map((item) => item.name), sorted.map((item) => item.students), 'นักเรียน', { horizontal: true, gridLeft: 108, highlightExtremes: true })} label="กราฟเปรียบเทียบจำนวนนักเรียน 16 อำเภอ แท่งสีทองคือจำนวนมากที่สุด และแท่งขอบทองคือจำนวนน้อยที่สุด" />
       </ChartPanel>
       <ChartPanel title="อัตราส่วนนักเรียนต่อทรัพยากร" description="จำนวนคนต่อหนึ่งห้องเรียนและต่อครูหนึ่งคน" height={560}>
         <EChart client:visible height={540} option={groupedBarOption(districtRows.map((item) => item.name), [{ name: 'นักเรียนต่อห้อง', data: districtRows.map((item) => item.studentsPerClassroom) }, { name: 'นักเรียนต่อครู', data: districtRows.map((item) => item.studentsPerTeacher) }], 'คน')} label="กราฟอัตราส่วนนักเรียนต่อห้องเรียนและครูรายอำเภอ" />
       </ChartPanel>
     </div>
-    <SectionCard title="ตารางข้อมูลครบทั้ง 16 อำเภอ" description="ตัวเลขอัตราส่วนปัดเป็นจำนวนเต็มตามรายงานต้นทาง">
-      <DataTable caption="สถิติการศึกษาจำแนกรายอำเภอ" columns={columns} rows={rows} compact />
+    <SectionCard title="ตารางข้อมูลครบทั้ง 16 อำเภอ" description="ตัวเลขอัตราส่วนปัดเป็นจำนวนเต็มตามรายงานต้นทาง แถบในคอลัมน์นักเรียนเทียบจากตัวเลขแถวนั้น แถวพื้นทองคือมากที่สุด และแถวพื้นฟ้าคือน้อยที่สุด">
+      <DataTable caption="สถิติการศึกษาจำแนกรายอำเภอ" columns={columns} rows={rows} compact meterKey="students" markExtremes />
     </SectionCard>
     <SourceNote source={sourceLabel} period={academicPeriod} table="ตาราง 3.2" note="ใช้รหัสอำเภอมาตรฐานเพื่อเตรียมเชื่อมโยงชุดข้อมูลในขั้นถัดไป" />
   </div>
