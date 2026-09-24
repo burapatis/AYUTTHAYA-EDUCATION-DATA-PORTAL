@@ -1,10 +1,12 @@
 ---
 import { withBase } from '../../lib/site';
+import { academicPeriod } from '../../data/fixtures';
 ---
 
 <footer class="app-footer">
   <div>
     <strong>ศูนย์ข้อมูลการศึกษาจังหวัดพระนครศรีอยุธยา</strong>
+    <p>จังหวัดพระนครศรีอยุธยา · {academicPeriod}</p>
     <p>นำเสนอข้อมูลเพื่อการวางแผน การตัดสินใจ และการเข้าถึงข้อมูลสาธารณะ</p>
   </div>
   <nav aria-label="เมนูส่วนท้าย">
@@ -22,15 +24,17 @@ import { withBase } from '../../lib/site';
     align-items: flex-end;
     justify-content: space-between;
     gap: var(--space-6);
-    padding-top: var(--space-10);
+    padding: var(--space-8);
     margin-top: var(--space-12);
-    border-top: 1px solid var(--color-border);
-    color: var(--color-slate-600);
+    border-radius: var(--radius-xl);
+    background: var(--color-navy-950);
+    color: rgb(255 255 255 / 0.72);
     font-size: var(--text-xs);
   }
 
   .app-footer strong {
-    color: var(--color-navy-900);
+    color: var(--color-white);
+    font-size: var(--text-sm);
   }
 
   .app-footer p {
@@ -43,6 +47,7 @@ import { withBase } from '../../lib/site';
   }
 
   .app-footer a {
+    color: #f8edda;
     font-weight: 650;
     text-decoration: none;
   }

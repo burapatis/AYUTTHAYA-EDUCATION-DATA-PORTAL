@@ -18,7 +18,7 @@ interface Props {
 const { filters, resetLabel = 'ล้างตัวกรอง' } = Astro.props;
 ---
 
-<form class="filter-bar" aria-label="ตัวกรองข้อมูล">
+<form class="filter-bar" aria-label="ตัวกรองข้อมูล" data-filter-bar>
   <div class="filter-bar__fields">
     {filters.map((filter) => (
       <label>
@@ -31,6 +31,24 @@ const { filters, resetLabel = 'ล้างตัวกรอง' } = Astro.prop
   </div>
   <button type="reset">{resetLabel}</button>
 </form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-filter-bar]').forEach((form) => {
+    if (form.dataset.bound === 'true') return;
+    form.dataset.bound = 'true';
+    const emit = () => {
+      const detail = Object.fromEntries(new FormData(form).entries());
+      document.dispatchEvent(new CustomEvent('portal-filter', { detail }));
+      Object.entries(detail).forEach(([key, value]) => {
+        document.querySelectorAll<HTMLElement>(`[data-filter-row="${key}"]`).forEach((row) => {
+          row.hidden = value !== 'all' && row.dataset.filterValue !== value;
+        });
+      });
+    };
+    form.addEventListener('change', emit);
+    form.addEventListener('reset', () => requestAnimationFrame(emit));
+  });
+</script>
 
 <style>
   .filter-bar {

@@ -2,6 +2,7 @@
 import DashboardLayout from '../layouts/DashboardLayout.astro';
 import Breadcrumbs from '../components/navigation/Breadcrumbs.astro';
 import SectionCard from '../components/dashboard/SectionCard.astro';
+import NavigationCard from '../components/dashboard/NavigationCard.astro';
 import { withBase } from '../lib/site';
 ---
 
@@ -9,13 +10,25 @@ import { withBase } from '../lib/site';
   <Breadcrumbs items={[{ label: 'ศูนย์ข้อมูล', href: '/' }, { label: 'ไม่พบหน้า' }]} />
   <div class="page-stack">
     <SectionCard>
-      <div class="not-found"><p>404</p><h1>ไม่พบหน้าที่ต้องการ</h1><span>ลิงก์อาจถูกเปลี่ยนแปลง หรือหน้าดังกล่าวยังไม่ได้เผยแพร่</span><a class="section-action" href={withBase('/')}>กลับสู่หน้าภาพรวม</a></div>
+      <div class="not-found">
+        <p>404</p>
+        <h1>ไม่พบหน้าที่ต้องการ</h1>
+        <span>ลิงก์อาจถูกเปลี่ยนแปลง หรือหน้าดังกล่าวยังไม่ได้เผยแพร่</span>
+        <a class="section-action" href={withBase('/')}>กลับสู่หน้าภาพรวม</a>
+      </div>
+      <div class="navigation-grid">
+        <NavigationCard href="/districts" title="เปรียบเทียบ 16 อำเภอ" description="ดูขนาดระบบการศึกษาในแต่ละอำเภอ" icon="districts" />
+        <NavigationCard href="/students" title="นักเรียน" description="ดูโครงสร้างและแนวโน้มจำนวนนักเรียน" icon="students" />
+        <NavigationCard href="/teachers" title="ครูและบุคลากร" description="ดูคุณวุฒิและระดับที่สอน" icon="teachers" />
+        <NavigationCard href="/definitions" title="นิยามข้อมูล" description="ตรวจความหมายก่อนเปรียบเทียบตัวเลข" icon="info" />
+      </div>
     </SectionCard>
   </div>
 </DashboardLayout>
 
 <style>
-  .not-found { display:grid; justify-items:center; padding:clamp(3rem,9vw,7rem) var(--space-5); text-align:center; }
+  .not-found { display:grid; justify-items:center; padding:var(--space-10) var(--space-5) var(--space-8); text-align:center; }
+  .navigation-grid { margin-top: var(--space-2); }
   .not-found p { margin:0; color:var(--color-gold-600); font-size:var(--text-sm); font-weight:800; letter-spacing:.12em; }
   .not-found h1 { margin:var(--space-3) 0; font-size:var(--text-3xl); }
   .not-found span { max-width:30rem; color:var(--color-slate-600); }

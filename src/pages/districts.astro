@@ -7,6 +7,7 @@ import ChartPanel from '../components/dashboard/ChartPanel.astro';
 import SectionCard from '../components/dashboard/SectionCard.astro';
 import DataTable from '../components/data-display/DataTable.astro';
 import SourceNote from '../components/data-display/SourceNote.astro';
+import FilterBar from '../components/dashboard/FilterBar.astro';
 import EChart from '../components/charts/EChart';
 import { barOption, districtMapOption, groupedBarOption } from '../lib/chart-options';
 import { academicPeriod, districtRows, formatNumber, provinceSummary, sourceLabel } from '../data/fixtures';
@@ -37,19 +38,20 @@ const rows = districtRows.map((row) => ({ code: row.id, district: row.name, scho
       <KpiCard label="นักเรียนต่อห้องสูงสุด" value="28 : 1" detail="พระนครศรีอยุธยา" icon="school" />
       <KpiCard label="นักเรียนน้อยที่สุด" value="708" unit="คน" detail="บ้านแพรก" icon="students" />
     </section>
+    <FilterBar filters={[{ id: 'district', label: 'อำเภอ', options: [{ value: 'all', label: 'ทุกอำเภอ' }, ...districtRows.map((row) => ({ value: row.name, label: row.name }))] }]} />
     <ChartPanel title="แผนที่นักเรียนรายอำเภอ" description={districtSummary} height={520}>
-      <EChart client:visible height={500} option={districtMapOption(districtRows)} label="แผนที่จำนวนนักเรียน 16 อำเภอในจังหวัดพระนครศรีอยุธยา สีเข้มหมายถึงนักเรียนมากกว่า" />
+      <EChart client:visible height={500} option={districtMapOption(districtRows)} filterId="district" label="แผนที่จำนวนนักเรียน 16 อำเภอในจังหวัดพระนครศรีอยุธยา สีเข้มหมายถึงนักเรียนมากกว่า" />
     </ChartPanel>
     <div class="content-grid">
       <ChartPanel title="จำนวนนักเรียนรายอำเภอ" description="เรียงจากมากไปน้อย แท่งสีทองคืออำเภอที่มีนักเรียนมากที่สุด และแท่งขอบทองคืออำเภอที่มีน้อยที่สุด" height={560}>
-        <EChart client:visible height={540} option={barOption(sorted.map((item) => item.name), sorted.map((item) => item.students), 'นักเรียน', { horizontal: true, gridLeft: 108, highlightExtremes: true })} label="กราฟเปรียบเทียบจำนวนนักเรียน 16 อำเภอ แท่งสีทองคือจำนวนมากที่สุด และแท่งขอบทองคือจำนวนน้อยที่สุด" />
+        <EChart client:visible height={540} option={barOption(sorted.map((item) => item.name), sorted.map((item) => item.students), 'นักเรียน', { horizontal: true, gridLeft: 108, highlightExtremes: true })} filterId="district" label="กราฟเปรียบเทียบจำนวนนักเรียน 16 อำเภอ แท่งสีทองคือจำนวนมากที่สุด และแท่งขอบทองคือจำนวนน้อยที่สุด" />
       </ChartPanel>
       <ChartPanel title="อัตราส่วนนักเรียนต่อทรัพยากร" description="จำนวนคนต่อหนึ่งห้องเรียนและต่อครูหนึ่งคน" height={560}>
-        <EChart client:visible height={540} option={groupedBarOption(districtRows.map((item) => item.name), [{ name: 'นักเรียนต่อห้อง', data: districtRows.map((item) => item.studentsPerClassroom) }, { name: 'นักเรียนต่อครู', data: districtRows.map((item) => item.studentsPerTeacher) }], 'คน')} label="กราฟอัตราส่วนนักเรียนต่อห้องเรียนและครูรายอำเภอ" />
+        <EChart client:visible height={540} option={groupedBarOption(districtRows.map((item) => item.name), [{ name: 'นักเรียนต่อห้อง', data: districtRows.map((item) => item.studentsPerClassroom) }, { name: 'นักเรียนต่อครู', data: districtRows.map((item) => item.studentsPerTeacher) }], 'คน')} filterId="district" horizontalBelow={760} label="กราฟอัตราส่วนนักเรียนต่อห้องเรียนและครูรายอำเภอ" />
       </ChartPanel>
     </div>
     <SectionCard title="ตารางข้อมูลครบทั้ง 16 อำเภอ" description="ตัวเลขอัตราส่วนปัดเป็นจำนวนเต็มตามรายงานต้นทาง แถบในคอลัมน์นักเรียนเทียบจากตัวเลขแถวนั้น แถวพื้นทองคือมากที่สุด และแถวพื้นฟ้าคือน้อยที่สุด">
-      <DataTable caption="สถิติการศึกษาจำแนกรายอำเภอ" columns={columns} rows={rows} compact meterKey="students" markExtremes />
+      <DataTable caption="สถิติการศึกษาจำแนกรายอำเภอ" columns={columns} rows={rows} compact meterKey="students" markExtremes filterId="district" filterKey="district" />
     </SectionCard>
     <SourceNote source={sourceLabel} period={academicPeriod} table="ตาราง 3.2" note="ใช้รหัสอำเภอมาตรฐานเพื่อเตรียมเชื่อมโยงชุดข้อมูลในขั้นถัดไป" />
   </div>

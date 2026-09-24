@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { withBase } from '../lib/site';
 
 interface Props {
   title: string;
@@ -12,6 +13,7 @@ const {
   description = 'ศูนย์ข้อมูลและสถิติการศึกษาจังหวัดพระนครศรีอยุธยา',
   lang = 'th',
 } = Astro.props;
+const ogImage = new URL(withBase('/og.png'), Astro.site ?? Astro.url).href;
 ---
 
 <!doctype html>
@@ -20,6 +22,16 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <meta name="theme-color" content="#0b2542" />
     <meta name="color-scheme" content="light" />
     <link rel="icon" href={`data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%230b2542%22/><path d=%22M16 26 32 16l16 10M20 31h24M22 31v14M32 31v14M42 31v14M18 48h28%22 fill=%22none%22 stroke=%22%23d9a33e%22 stroke-width=%224%22 stroke-linecap=%22round%22/></svg>`} />

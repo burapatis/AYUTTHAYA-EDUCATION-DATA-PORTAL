@@ -12,9 +12,11 @@ interface Props {
   compact?: boolean;
   meterKey?: string;
   markExtremes?: boolean;
+  filterId?: string;
+  filterKey?: string;
 }
 
-const { caption, columns, rows, compact = false, meterKey, markExtremes = false } = Astro.props;
+const { caption, columns, rows, compact = false, meterKey, markExtremes = false, filterId, filterKey } = Astro.props;
 
 const parseMetric = (value: string | number) => {
   if (typeof value === 'number') return value;
@@ -48,7 +50,7 @@ const tableRows = rows.map((row) => {
     </thead>
     <tbody>
       {tableRows.map(({ row, isMax, isMin, meterWidth }) => (
-        <tr class:list={{ 'is-max': isMax, 'is-min': isMin }}>
+        <tr class:list={{ 'is-max': isMax, 'is-min': isMin }} data-filter-row={filterId} data-filter-value={filterKey ? String(row[filterKey] ?? '') : undefined}>
           {columns.map((column, index) => (
             <td class={`align-${column.align ?? 'left'}`} data-label={column.label}>
               {column.key === meterKey && meterWidth !== null ? (

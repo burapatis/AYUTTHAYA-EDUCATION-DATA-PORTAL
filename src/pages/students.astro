@@ -7,6 +7,7 @@ import ChartPanel from '../components/dashboard/ChartPanel.astro';
 import SectionCard from '../components/dashboard/SectionCard.astro';
 import DataTable from '../components/data-display/DataTable.astro';
 import SourceNote from '../components/data-display/SourceNote.astro';
+import FilterBar from '../components/dashboard/FilterBar.astro';
 import EChart from '../components/charts/EChart';
 import { femaleSeriesColor, groupedBarOption, lineOption } from '../lib/chart-options';
 import { academicPeriod, formatNumber, sourceLabel, studentGrades, studentLevels, studentTrend } from '../data/fixtures';
@@ -31,8 +32,9 @@ const rows = studentGrades.map((item) => ({ grade: item.label, male: formatNumbe
       <ChartPanel title="โครงสร้างนักเรียนตามระดับและเพศ" description="เปรียบเทียบจำนวนนักเรียนชายและหญิง" height={360}>
         <EChart client:visible option={groupedBarOption(studentLevels.map((item) => item.label), [{ name: 'ชาย', data: studentLevels.map((item) => item.male) }, { name: 'หญิง', data: studentLevels.map((item) => item.female), color: femaleSeriesColor }])} label="กราฟจำนวนนักเรียนชายหญิงแยกตามระดับการศึกษา" />
       </ChartPanel>
-      <ChartPanel title="แนวโน้มนักเรียน 5 ปี" description="ปีการศึกษา 2563–2567" height={360}>
-        <EChart client:visible option={lineOption(studentTrend.map((item) => item.year), studentTrend.map((item) => item.total), 'นักเรียน')} label="กราฟแนวโน้มจำนวนนักเรียนห้าปี" />
+      <ChartPanel title="แนวโน้มนักเรียน 5 ปี" description="ปีการศึกษา 2563–2567 เลือกปีเพื่อดูแนวโน้มถึงปีนั้นจากจุดที่มีอยู่แล้ว" height={360}>
+        <FilterBar filters={[{ id: 'year', label: 'แสดงถึงปีการศึกษา', options: [{ value: 'all', label: 'ทุกปีที่มีข้อมูล' }, ...studentTrend.map((item) => ({ value: item.year, label: `ถึงปี ${item.year}` }))] }]} />
+        <EChart client:visible option={lineOption(studentTrend.map((item) => item.year), studentTrend.map((item) => item.total), 'นักเรียน')} filterId="year" filterMode="through" label="กราฟแนวโน้มจำนวนนักเรียนห้าปี" />
       </ChartPanel>
     </div>
     <SectionCard title="นักเรียนจำแนกตามระดับชั้น" description="ตั้งแต่อนุบาลถึงมัธยมศึกษาปีที่ 6">

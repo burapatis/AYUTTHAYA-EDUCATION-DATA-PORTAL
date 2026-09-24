@@ -70,6 +70,7 @@ const groups = [
     <div>
       <strong>แหล่งข้อมูลตรวจสอบได้</strong>
       <p>แสดงปี หน่วย และแหล่งที่มาของทุกตัวชี้วัด</p>
+      <a href={withBase('/methodology')}>วิธีการและแหล่งข้อมูล</a>
     </div>
   </div>
 </aside>
@@ -219,6 +220,19 @@ const groups = [
     color: var(--color-slate-600);
     font-size: 0.68rem;
     line-height: 1.45;
+  }
+
+  .sidebar__trust a {
+    display: inline-block;
+    margin-top: var(--space-2);
+    padding: 0;
+    color: var(--color-navy-800);
+    font-size: var(--text-xs);
+    font-weight: 700;
+  }
+
+  .sidebar__trust a::before {
+    display: none;
   }
 
   .sidebar-backdrop {
