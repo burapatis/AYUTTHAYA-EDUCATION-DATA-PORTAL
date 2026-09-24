@@ -10,6 +10,7 @@ import { withBase } from '../../lib/site';
   <nav aria-label="เมนูส่วนท้าย">
     <a href={withBase('/methodology')}>วิธีการ</a>
     <a href={withBase('/data')}>ชุดข้อมูล</a>
+    <a href={withBase('/definitions')}>นิยามข้อมูล</a>
     <a href={withBase('/about')}>เกี่ยวกับเว็บไซต์</a>
   </nav>
 </footer>
@@ -54,6 +55,10 @@ import { withBase } from '../../lib/site';
     .app-footer {
       align-items: flex-start;
       flex-direction: column;
+    }
+
+    .app-footer nav {
+      flex-wrap: wrap;
     }
   }
 </style>

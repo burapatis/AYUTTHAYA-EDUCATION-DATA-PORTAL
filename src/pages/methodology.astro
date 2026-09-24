@@ -6,6 +6,7 @@ import SectionCard from '../components/dashboard/SectionCard.astro';
 import Notice from '../components/data-display/Notice.astro';
 import SourceNote from '../components/data-display/SourceNote.astro';
 import { sourceLabel } from '../data/fixtures';
+import { withBase } from '../lib/site';
 ---
 
 <DashboardLayout title="วิธีการและแหล่งข้อมูล · ศูนย์ข้อมูลการศึกษาอยุธยา" activePath="/methodology">
@@ -17,13 +18,14 @@ import { sourceLabel } from '../data/fixtures';
       <article class="narrative-card"><span class="narrative-card__index">02</span><h2>แยกรอบเวลา</h2><p>ไม่รวมปีการศึกษา ปีงบประมาณ และปีปฏิทินเข้าด้วยกัน แต่แสดงรอบอ้างอิงของแต่ละตัวชี้วัดเสมอ</p></article>
       <article class="narrative-card"><span class="narrative-card__index">03</span><h2>ตรวจยอดรวม</h2><p>เปรียบเทียบยอดรายหมวดและรายอำเภอกับยอดจังหวัด พร้อมบันทึกข้อแตกต่างแทนการแก้ตัวเลขต้นทาง</p></article>
     </div>
-    <SectionCard title="นิยามและการคำนวณ">
+    <SectionCard title="นิยามและการคำนวณ" description="ตัวอย่างนิยามหลัก; พจนานุกรมฉบับเต็มระบุหน่วย สูตร และเงื่อนไขการเปรียบเทียบของทุกหัวข้อสำคัญ">
       <dl class="metric-definition">
         <dt>นักเรียนต่อห้องเรียน</dt><dd>จำนวนนักเรียนรวมหารด้วยจำนวนห้องเรียน แล้วแสดงเป็นจำนวนคนต่อหนึ่งห้องตามค่าที่รายงาน</dd>
         <dt>นักเรียนต่อครู</dt><dd>จำนวนนักเรียนรวมหารด้วยจำนวนครู แล้วแสดงเป็นจำนวนคนต่อครูหนึ่งคนตามค่าที่รายงาน</dd>
         <dt>การเปลี่ยนแปลงรายปี</dt><dd>(ค่าปีล่าสุด − ค่าปีก่อน) ÷ ค่าปีก่อน × 100 โดยปัดทศนิยมหนึ่งตำแหน่ง</dd>
         <dt>ค่าที่ขาดหาย</dt><dd>แสดงเป็น “—” และไม่แทนเป็นศูนย์ เพราะศูนย์เป็นค่าข้อมูลที่มีความหมายต่างจากไม่พบข้อมูล</dd>
       </dl>
+      <a class="definition-link" href={withBase('/definitions')}>เปิดพจนานุกรมข้อมูลฉบับเต็ม →</a>
     </SectionCard>
     <Notice tone="warning" title="ข้อสังเกตจากเอกสารต้นทาง"><p>ตาราง 3.10 มีปีในหัวภาษาอังกฤษไม่ตรงกับหัวภาษาไทย, ตาราง 3.12 ไม่ระบุปีในชื่อเรื่อง, ชื่ออำเภอบางไทรและบางซ้ายถอดเป็นภาษาอังกฤษซ้ำกัน และไฟล์ประชากรประกอบมีชุดแถวซ้ำพร้อมรหัสงวดที่ต้องยืนยันก่อนเผยแพร่</p></Notice>
     <SectionCard title="แนวทางประกันคุณภาพ" description="ขั้นตอนที่ใช้ก่อนนำข้อมูลขึ้นหน้าเผยแพร่">
@@ -32,3 +34,8 @@ import { sourceLabel } from '../data/fixtures';
     <SourceNote source={sourceLabel} period="รายงานเผยแพร่ พ.ศ. 2568" table="บทที่ 3 และตาราง 7.4" note="ข้อสังเกตทั้งหมดคงไว้เพื่อความโปร่งใสและควรตรวจยืนยันกับหน่วยงานเจ้าของข้อมูล" />
   </div>
 </DashboardLayout>
+
+<style>
+  .definition-link { display:inline-flex; margin-top:var(--space-5); color:var(--color-blue-700); font-size:var(--text-sm); font-weight:750; text-decoration:none; }
+  .definition-link:hover { text-decoration:underline; text-underline-offset:.2rem; }
+</style>

@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1.0.0",
+  "datasetId": "local-education",
+  "titleTh": "การศึกษาสังกัดองค์กรปกครองส่วนท้องถิ่น จังหวัดพระนครศรีอยุธยา",
+  "period": {
+    "type": "academic_year",
+    "buddhistYear": 2567,
+    "gregorianYear": 2024,
+    "labelTh": "ปีการศึกษา 2567 (2024)"
+  },
+  "scope": {
+    "jurisdictionLabelTh": "กรมส่งเสริมการปกครองส่วนท้องถิ่น",
+    "sourceProviderLabelTh": "องค์กรปกครองส่วนท้องถิ่นภายในจังหวัดพระนครศรีอยุธยา",
+    "coverageTh": "สถานศึกษาในกลุ่มสังกัดท้องถิ่นที่ปรากฏในตารางต้นทาง"
+  },
+  "sourceTables": ["3.1", "3.3", "3.5", "3.7", "3.8"],
+  "units": {
+    "schools": "แห่ง",
+    "classrooms": "ห้อง",
+    "teachers": "คน",
+    "students": "คน"
+  },
+  "summary": {
+    "schools": 26,
+    "classrooms": 564,
+    "teachers": 582,
+    "students": 10742,
+    "maleStudents": 5565,
+    "femaleStudents": 5177,
+    "districtsWithSchools": 6,
+    "studentsPerClassroomDerived": 19.0,
+    "studentsPerTeacherDerived": 18.5,
+    "provinceSharesPercent": {
+      "schools": 6.1,
+      "classrooms": 10.1,
+      "teachers": 7.9,
+      "students": 9.3
+    }
+  },
+  "levels": [
+    { "id": "pre-primary", "labelTh": "ก่อนประถมศึกษา", "total": 2849, "male": 1468, "female": 1381 },
+    { "id": "primary", "labelTh": "ประถมศึกษา", "total": 5562, "male": 2823, "female": 2739 },
+    { "id": "lower-secondary", "labelTh": "มัธยมศึกษาตอนต้น", "total": 1717, "male": 951, "female": 766 },
+    { "id": "upper-secondary", "labelTh": "มัธยมศึกษาตอนปลาย", "total": 614, "male": 323, "female": 291 }
+  ],
+  "grades": [
+    { "id": "kindergarten-1", "labelTh": "อนุบาล 1", "total": 847, "male": 427, "female": 420 },
+    { "id": "kindergarten-2", "labelTh": "อนุบาล 2", "total": 980, "male": 510, "female": 470 },
+    { "id": "kindergarten-3", "labelTh": "อนุบาล 3", "total": 935, "male": 485, "female": 450 },
+    { "id": "early-childhood", "labelTh": "เด็กเล็ก", "total": 87, "male": 46, "female": 41 },
+    { "id": "primary-1", "labelTh": "ประถมศึกษาปีที่ 1", "total": 794, "male": 396, "female": 398 },
+    { "id": "primary-2", "labelTh": "ประถมศึกษาปีที่ 2", "total": 964, "male": 474, "female": 490 },
+    { "id": "primary-3", "labelTh": "ประถมศึกษาปีที่ 3", "total": 991, "male": 503, "female": 488 },
+    { "id": "primary-4", "labelTh": "ประถมศึกษาปีที่ 4", "total": 993, "male": 504, "female": 489 },
+    { "id": "primary-5", "labelTh": "ประถมศึกษาปีที่ 5", "total": 963, "male": 498, "female": 465 },
+    { "id": "primary-6", "labelTh": "ประถมศึกษาปีที่ 6", "total": 857, "male": 448, "female": 409 },
+    { "id": "secondary-1", "labelTh": "มัธยมศึกษาปีที่ 1", "total": 663, "male": 355, "female": 308 },
+    { "id": "secondary-2", "labelTh": "มัธยมศึกษาปีที่ 2", "total": 539, "male": 313, "female": 226 },
+    { "id": "secondary-3", "labelTh": "มัธยมศึกษาปีที่ 3", "total": 515, "male": 283, "female": 232 },
+    { "id": "secondary-4", "labelTh": "มัธยมศึกษาปีที่ 4", "total": 227, "male": 146, "female": 81 },
+    { "id": "secondary-5", "labelTh": "มัธยมศึกษาปีที่ 5", "total": 209, "male": 102, "female": 107 },
+    { "id": "secondary-6", "labelTh": "มัธยมศึกษาปีที่ 6", "total": 178, "male": 75, "female": 103 }
+  ],
+  "districts": [
+    { "districtCode": "1301", "districtNameTh": "พระนครศรีอยุธยา", "schools": 9, "classrooms": 166, "teachers": 257, "students": 3728 },
+    { "districtCode": "1302", "districtNameTh": "ท่าเรือ", "schools": 4, "classrooms": 185, "teachers": 86, "students": 1530 },
+    { "districtCode": "1303", "districtNameTh": "นครหลวง", "schools": 0, "classrooms": 0, "teachers": 0, "students": 0 },
+    { "districtCode": "1304", "districtNameTh": "บางไทร", "schools": 1, "classrooms": 62, "teachers": 47, "students": 1696 },
+    { "districtCode": "1305", "districtNameTh": "บางบาล", "schools": 0, "classrooms": 0, "teachers": 0, "students": 0 },
+    { "districtCode": "1306", "districtNameTh": "บางปะอิน", "schools": 4, "classrooms": 46, "teachers": 53, "students": 1363 },
+    { "districtCode": "1307", "districtNameTh": "บางปะหัน", "schools": 0, "classrooms": 0, "teachers": 0, "students": 0 },
+    { "districtCode": "1308", "districtNameTh": "ผักไห่", "schools": 0, "classrooms": 0, "teachers": 0, "students": 0 },
+    { "districtCode": "1309", "districtNameTh": "ภาชี", "schools": 0, "classrooms": 0, "teachers": 0, "students": 0 },
+    { "districtCode": "1310", "districtNameTh": "ลาดบัวหลวง", "schools": 0, "classrooms": 0, "teachers": 0, "students": 0 },
+    { "districtCode": "1311", "districtNameTh": "วังน้อย", "schools": 0, "classrooms": 0, "teachers": 0, "students": 0 },
+    { "districtCode": "1312", "districtNameTh": "เสนา", "schools": 7, "classrooms": 97, "teachers": 129, "students": 2319 },
+    { "districtCode": "1313", "districtNameTh": "บางซ้าย", "schools": 0, "classrooms": 0, "teachers": 0, "students": 0 },
+    { "districtCode": "1314", "districtNameTh": "อุทัย", "schools": 0, "classrooms": 0, "teachers": 0, "students": 0 },
+    { "districtCode": "1315", "districtNameTh": "มหาราช", "schools": 0, "classrooms": 0, "teachers": 0, "students": 0 },
+    { "districtCode": "1316", "districtNameTh": "บ้านแพรก", "schools": 1, "classrooms": 8, "teachers": 10, "students": 106 }
+  ],
+  "dataQuality": [
+    "ค่ารายอำเภอเป็นจำนวนของกลุ่มสังกัดท้องถิ่นตามตารางต้นทาง ไม่ใช่จำนวนสถานศึกษาทุกสังกัดในอำเภอ",
+    "อัตราส่วนนักเรียนต่อห้องเรียนและต่อครูใน summary เป็นค่าคำนวณจากยอดรวมและปัดทศนิยมหนึ่งตำแหน่ง",
+    "ค่า 0 หมายถึงตารางต้นทางรายงานเป็นศูนย์สำหรับกลุ่มสังกัดนี้ ไม่ได้หมายความว่าอำเภอนั้นไม่มีสถานศึกษาสังกัดอื่น"
+  ]
+}

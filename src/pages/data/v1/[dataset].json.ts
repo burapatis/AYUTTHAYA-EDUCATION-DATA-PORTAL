@@ -7,6 +7,8 @@ import teachers from '../../../data/v1/teachers.json';
 import dropout from '../../../data/v1/dropout.json';
 import postsecondary from '../../../data/v1/postsecondary.json';
 import lifelongLearning from '../../../data/v1/lifelong-learning.json';
+import localEducation from '../../../data/v1/local-education.json';
+import definitions from '../../../data/v1/definitions.json';
 
 const datasets = {
   manifest,
@@ -17,6 +19,8 @@ const datasets = {
   dropout,
   postsecondary,
   'lifelong-learning': lifelongLearning,
+  'local-education': localEducation,
+  definitions,
 } as const;
 
 export function getStaticPaths() {
