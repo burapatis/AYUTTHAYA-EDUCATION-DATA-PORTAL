@@ -1,0 +1,130 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import Breadcrumbs from '../components/navigation/Breadcrumbs.astro';
+import PageHeader from '../components/dashboard/PageHeader.astro';
+import Notice from '../components/data-display/Notice.astro';
+import SchoolReturnApp from '../components/school-return/SchoolReturnApp';
+import { districtRows } from '../data/fixtures';
+---
+
+<DashboardLayout
+  title="รายงานสถานศึกษา · ศูนย์ข้อมูลการศึกษาอยุธยา"
+  description="กรอกข้อมูลการศึกษาปัจจุบันของสถานศึกษา แล้วดูสรุปสถิติเพื่อพิมพ์หรือแชร์ให้ต้นสังกัด"
+  activePath="/school-return"
+>
+  <Breadcrumbs items={[{ label: 'ศูนย์ข้อมูล', href: '/' }, { label: 'รายงานสถานศึกษา' }]} />
+  <div class="page-stack">
+    <PageHeader
+      eyebrow="School return"
+      title="รายงานสถานศึกษา"
+      description="กรอกข้อมูลปัจจุบันในระดับโรงเรียนหรือสถานศึกษา ตามรายการที่เว็บไซต์ใช้สรุปสถิติ แล้วพิมพ์หรือแชร์ให้หน่วยงานต้นสังกัด"
+      status="ข้อมูลที่สถานศึกษากรอกเอง"
+    />
+    <Notice tone="info" title="คนละชุดกับรายงานสถิติจังหวัด">
+      <p>เว็บไซต์ยังไม่มีบัญชีรายชื่อโรงเรียนจากรายงานต้นทาง หน้านี้จึงให้แต่ละแห่งบันทึกของตนเองบนเครื่องนี้ ตัวเลขที่กรอกไม่ถูกนำไปรวมกับยอดจังหวัดหรือยอดอำเภอ</p>
+    </Notice>
+    <SchoolReturnApp client:load districts={districtRows.map((row) => row.name)} />
+  </div>
+</DashboardLayout>
+
+<style>
+  :global(.school-return) {
+    display: grid;
+    grid-template-columns: 16rem minmax(0, 1fr);
+    gap: var(--space-5);
+    align-items: start;
+  }
+
+  :global(.school-return__list) {
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+  }
+
+  :global(.school-return__list > button),
+  :global(.school-return__actions button) {
+    border: 0;
+    border-radius: var(--radius-md);
+    background: var(--color-navy-900);
+    color: var(--color-white);
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  :global(.school-return__list > button) { width: 100%; padding: var(--space-3); }
+  :global(.school-return__list p),
+  :global(.school-return__form p) { color: var(--color-text-muted); font-size: var(--text-sm); }
+  :global(.school-return__list ul) { margin: var(--space-4) 0 0; padding: 0; list-style: none; }
+  :global(.school-return__list li) { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2); margin-top: var(--space-2); }
+  :global(.school-return__list li button) {
+    padding: var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    text-align: left;
+    cursor: pointer;
+  }
+  :global(.school-return__list li button.is-current) { border-color: var(--color-gold-500); background: var(--color-gold-100); }
+  :global(.school-return__list li button span) { display: block; color: var(--color-text-muted); font-size: var(--text-xs); }
+  :global(.school-return__work) { display: grid; gap: var(--space-5); }
+  :global(.school-return__form),
+  :global(.school-return__report) {
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+  }
+  :global(.school-return fieldset) { margin: 0 0 var(--space-5); padding: 0; border: 0; }
+  :global(.school-return legend) { margin-bottom: var(--space-3); font-weight: 800; }
+  :global(.school-return label) { display: grid; gap: var(--space-1); color: var(--color-slate-700); font-size: var(--text-sm); font-weight: 700; }
+  :global(.school-return__form > fieldset:first-child),
+  :global(.school-return__pair) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+  :global(.school-return input),
+  :global(.school-return select) {
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+  }
+  :global(.school-return__table-wrap) { overflow-x: auto; }
+  :global(.school-return table) { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+  :global(.school-return th),
+  :global(.school-return td) { padding: var(--space-2); border-bottom: 1px solid var(--color-border); text-align: right; }
+  :global(.school-return th:first-child),
+  :global(.school-return td:first-child) { text-align: left; }
+  :global(.school-return__actions) { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  :global(.school-return__actions button) { padding: var(--space-3) var(--space-4); }
+  :global(.school-return__actions button:nth-child(n + 2)) { background: var(--color-white); color: var(--color-navy-900); border: 1px solid var(--color-border-strong); }
+  :global(.school-return__notice) { margin-top: var(--space-3); color: var(--color-navy-800); font-weight: 700; }
+  :global(.school-return__eyebrow) { margin-bottom: var(--space-2); color: var(--color-gold-600); font-size: var(--text-xs); font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+  :global(.school-return__report h2) { margin: 0 0 var(--space-2); font-size: var(--text-2xl); }
+  :global(.school-return__report dl) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); margin: var(--space-5) 0; }
+  :global(.school-return__report dl div) { padding: var(--space-4); border-radius: var(--radius-md); background: var(--color-slate-50); }
+  :global(.school-return__report dt) { color: var(--color-text-muted); font-size: var(--text-xs); }
+  :global(.school-return__report dd) { margin: var(--space-1) 0 0; font-size: var(--text-xl); font-weight: 800; }
+  :global(.school-return__report small) { display: block; color: var(--color-gold-600); font-size: var(--text-xs); font-weight: 700; }
+  :global(.school-return__source) { color: var(--color-text-muted); font-size: var(--text-sm); }
+
+  @media (max-width: 900px) {
+    :global(.school-return),
+    :global(.school-return__form > fieldset:first-child),
+    :global(.school-return__pair),
+    :global(.school-return__report dl) { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  @media print {
+    :global(.app-header),
+    :global(.sidebar),
+    :global(.sidebar-backdrop),
+    :global(.app-footer),
+    :global(.breadcrumbs),
+    :global(.page-header),
+    :global(.notice),
+    :global(.school-return__list),
+    :global(.school-return__form) { display: none !important; }
+    :global(.school-return) { display: block; }
+    :global(.school-return__report) { border: 0; padding: 0; }
+  }
+</style>
