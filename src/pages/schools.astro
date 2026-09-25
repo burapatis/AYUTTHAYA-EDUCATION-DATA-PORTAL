@@ -7,6 +7,8 @@ import ChartPanel from '../components/dashboard/ChartPanel.astro';
 import SectionCard from '../components/dashboard/SectionCard.astro';
 import DataTable from '../components/data-display/DataTable.astro';
 import SourceNote from '../components/data-display/SourceNote.astro';
+import Notice from '../components/data-display/Notice.astro';
+import { withBase } from '../lib/site';
 import EChart from '../components/charts/EChart';
 import { barOption } from '../lib/chart-options';
 import { academicPeriod, districtRows, formatNumber, jurisdictions, provinceSummary, sourceLabel } from '../data/fixtures';
@@ -25,6 +27,9 @@ const rows = districtRows.map((row) => ({ district: row.name, schools: formatNum
       <KpiCard label="สถานศึกษา สพฐ." value="362" unit="แห่ง" detail="85% ของสถานศึกษาทั้งหมด" icon="school" />
       <KpiCard label="ห้องต่อสถานศึกษา" value="13.2" unit="ห้อง" detail="คำนวณจากยอดรวมจังหวัด" icon="trend" />
     </section>
+    <Notice tone="info" title="การศึกษาพิเศษ">
+      <p>กราฟสังกัดมาจากรายงานสถิติจังหวัด ซึ่งไม่ได้แยกชื่อศูนย์การศึกษาพิเศษประจำจังหวัด บริการนี้มีอยู่ภายใต้สำนักบริหารงานการศึกษาพิเศษ สพฐ. <a class="scope-link" href={withBase('/special-education')}>ดูขอบเขตการศึกษาพิเศษ</a></p>
+    </Notice>
     <div class="content-grid">
       <ChartPanel title="สถานศึกษาจำแนกตามสังกัด" description="จำนวนแห่งในแต่ละกลุ่มสังกัด" height={340}>
         <EChart client:visible option={barOption(jurisdictions.map((item) => item.shortLabel), jurisdictions.map((item) => item.schools), 'สถานศึกษา', { unit: 'แห่ง' })} label="กราฟจำนวนสถานศึกษาแยกตามสังกัด" />
@@ -39,3 +44,7 @@ const rows = districtRows.map((row) => ({ district: row.name, schools: formatNum
     <SourceNote source={sourceLabel} period={academicPeriod} table="ตาราง 3.1–3.2" note="คำว่า “สถานศึกษา” ครอบคลุมหน่วยงานตามนิยามของตารางต้นทาง" />
   </div>
 </DashboardLayout>
+
+<style>
+  .scope-link { color: var(--color-navy-800); font-weight: 750; }
+</style>

@@ -1,0 +1,79 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import Breadcrumbs from '../components/navigation/Breadcrumbs.astro';
+import PageHeader from '../components/dashboard/PageHeader.astro';
+import SectionCard from '../components/dashboard/SectionCard.astro';
+import Notice from '../components/data-display/Notice.astro';
+import SourceNote from '../components/data-display/SourceNote.astro';
+import { sourceLabel } from '../data/fixtures';
+import { withBase } from '../lib/site';
+---
+
+<DashboardLayout
+  title="การศึกษาพิเศษ · ศูนย์ข้อมูลการศึกษาอยุธยา"
+  description="ขอบเขตการจัดการศึกษาพิเศษโดยศูนย์การศึกษาพิเศษประจำจังหวัดพระนครศรีอยุธยา ชุดตัวเลขแยกยังไม่ได้นำเข้า"
+  activePath="/special-education"
+>
+  <Breadcrumbs items={[{ label: 'ศูนย์ข้อมูล', href: '/' }, { label: 'การศึกษาพิเศษ' }]} />
+  <div class="page-stack">
+    <PageHeader
+      eyebrow="Special education"
+      title="การศึกษาพิเศษ"
+      description="จังหวัดมีการจัดการศึกษาสำหรับผู้พิการโดยศูนย์การศึกษาพิเศษประจำจังหวัดพระนครศรีอยุธยา รายงานสถิติจังหวัดไม่ได้ตั้งชื่อเรื่องนี้แยกไว้"
+      status="ยังไม่นำเข้าตัวเลข"
+    />
+    <Notice tone="warning" title="ชุดตัวเลขแยกยังไม่ได้นำเข้า">
+      <p>หน้านี้ยืนยันว่าบริการมีอยู่และระบุหน่วยงานที่รับผิดชอบ ยังไม่มีตารางจำนวนผู้เรียนที่ตรวจแล้ว จึงไม่แสดงตัวเลข และไม่นำไปบวกกับนักเรียน 115,123 คนของจังหวัด</p>
+    </Notice>
+
+    <SectionCard title="หน่วยงานที่รับผิดชอบ" description="สายการกำกับตามโครงสร้างการจัดการศึกษาพิเศษของจังหวัด">
+      <dl class="metric-definition">
+        <dt>หน่วยจัดบริการ</dt>
+        <dd>ศูนย์การศึกษาพิเศษประจำจังหวัดพระนครศรีอยุธยา</dd>
+        <dt>หน่วยงานกำกับ</dt>
+        <dd>สำนักบริหารงานการศึกษาพิเศษ</dd>
+        <dt>สังกัด</dt>
+        <dd>สำนักงานคณะกรรมการการศึกษาขั้นพื้นฐาน (สพฐ.)</dd>
+      </dl>
+    </SectionCard>
+
+    <div class="narrative-grid">
+      <article class="narrative-card">
+        <span class="narrative-card__index">01</span>
+        <h2>บริการนี้มีอยู่</h2>
+        <p>การไม่มีชื่อ “การศึกษาพิเศษ” ในกราฟสังกัดของเว็บไซต์ ไม่ได้หมายความว่าจังหวัดไม่มีการจัดการศึกษาสำหรับผู้พิการ</p>
+      </article>
+      <article class="narrative-card">
+        <span class="narrative-card__index">02</span>
+        <h2>ยังแยกจากยอด สพฐ. ไม่ได้</h2>
+        <p>ศูนย์อยู่ใน สพฐ. ผู้เรียนบางส่วนจึงอาจอยู่ในยอดสถานศึกษาและนักเรียน สพฐ. ของรายงานสถิติจังหวัดแล้ว แต่ตารางไม่ได้แยกให้เห็น</p>
+      </article>
+      <article class="narrative-card">
+        <span class="narrative-card__index">03</span>
+        <h2>จะไม่นับซ้ำ</h2>
+        <p>เมื่อมีตารางที่ตรวจแล้ว จะแสดงเป็นชุดข้อมูลเฉพาะของศูนย์ และตรวจก่อนว่าซ้ำกับนักเรียนเรียนร่วมหรือยอด สพฐ. หรือไม่</p>
+      </article>
+    </div>
+
+    <SectionCard title="สิ่งที่จะเพิ่มเมื่อได้ข้อมูลจริง" description="จะนำเข้าเฉพาะค่าที่มีแหล่ง ปี และหน่วยกำกับ และแยกจากยอดจังหวัด">
+      <ul class="plain-list">
+        <li>จำนวนผู้เรียนในความดูแลของศูนย์ แยกตามรูปแบบบริการที่ต้นทางรายงาน</li>
+        <li>เพศ ระดับหรือช่วงวัย และอำเภอที่อาศัยอยู่ เมื่อต้นทางมีและจำนวนไม่เล็กจนระบุตัวบุคคลได้</li>
+        <li>ปีของข้อมูล หากไม่ตรงกับปีการศึกษา 2567 จะแสดงรอบของแหล่งนั้นแยกไว้</li>
+      </ul>
+      <a class="definition-link" href={withBase('/definitions')}>ดูนิยาม “การศึกษาพิเศษ” ในพจนานุกรมข้อมูล</a>
+    </SectionCard>
+
+    <SourceNote
+      source={sourceLabel}
+      period="ยังไม่มีรอบตัวเลขที่ตรวจแล้ว"
+      table="ไม่มีตารางตัวเลขการศึกษาพิเศษในชุดข้อมูลปัจจุบัน"
+      note="ข้อความบนหน้านี้เป็นขอบเขตของบริการ ไม่ใช่สถิติผู้เรียน"
+    />
+  </div>
+</DashboardLayout>
+
+<style>
+  .definition-link { display:inline-flex; margin-top:var(--space-5); color:var(--color-blue-700); font-size:var(--text-sm); font-weight:750; text-decoration:none; }
+  .definition-link:hover { text-decoration:underline; text-underline-offset:.2rem; }
+</style>
