@@ -6,6 +6,7 @@ import SectionCard from '../components/dashboard/SectionCard.astro';
 import NavigationCard from '../components/dashboard/NavigationCard.astro';
 import Notice from '../components/data-display/Notice.astro';
 import ExternalResourceCard from '../components/data-display/ExternalResourceCard.astro';
+import { withBase } from '../lib/site';
 ---
 
 <DashboardLayout
@@ -24,7 +25,7 @@ import ExternalResourceCard from '../components/data-display/ExternalResourceCar
 
     <SectionCard title="ผู้จัดทำเว็บไซต์" description="ผู้ริเริ่ม ออกแบบ และพัฒนาศูนย์ข้อมูลแห่งนี้">
       <div class="creator-profile">
-        <div class="creator-profile__mark" aria-hidden="true">บพ</div>
+        <img class="creator-profile__photo" src={withBase('/creator.jpg')} width="152" height="190" alt="บูรพาทิศ พลอยสุวรรณ์ ผู้จัดทำเว็บไซต์" />
         <div class="creator-profile__content">
           <p class="creator-profile__role">ผู้วิจัยอิสระ</p>
           <h3>บูรพาทิศ พลอยสุวรรณ์</h3>
@@ -107,17 +108,13 @@ import ExternalResourceCard from '../components/data-display/ExternalResourceCar
     gap: var(--space-6);
   }
 
-  .creator-profile__mark {
-    display: grid;
-    place-items: center;
-    width: 4.5rem;
-    height: 4.5rem;
-    border: 1px solid #cbdce9;
+  .creator-profile__photo {
+    width: 9.5rem;
+    height: 11.875rem;
+    object-fit: cover;
+    object-position: center 16%;
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    background: linear-gradient(145deg, var(--color-blue-100), #fff);
-    color: var(--color-navy-900);
-    font-size: var(--text-xl);
-    font-weight: 800;
   }
 
   .creator-profile__role {
@@ -223,6 +220,11 @@ import ExternalResourceCard from '../components/data-display/ExternalResourceCar
   @media (max-width: 640px) {
     .creator-profile {
       grid-template-columns: minmax(0, 1fr);
+    }
+
+    .creator-profile__photo {
+      width: 8rem;
+      height: 10rem;
     }
 
     address {
