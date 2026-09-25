@@ -18,14 +18,37 @@ export const schoolReturnKinds = [
   { id: 'lifelong', label: 'การศึกษานอกระบบหรือการเรียนรู้ตลอดชีวิต' },
 ] as const;
 
+export const schoolReturnGrades = [
+  { id: 'early-childhood', label: 'เด็กเล็ก', levelId: 'pre-elementary' },
+  { id: 'kg1', label: 'อนุบาล 1', levelId: 'pre-elementary' },
+  { id: 'kg2', label: 'อนุบาล 2', levelId: 'pre-elementary' },
+  { id: 'kg3', label: 'อนุบาล 3', levelId: 'pre-elementary' },
+  { id: 'p1', label: 'ประถม 1', levelId: 'elementary' },
+  { id: 'p2', label: 'ประถม 2', levelId: 'elementary' },
+  { id: 'p3', label: 'ประถม 3', levelId: 'elementary' },
+  { id: 'p4', label: 'ประถม 4', levelId: 'elementary' },
+  { id: 'p5', label: 'ประถม 5', levelId: 'elementary' },
+  { id: 'p6', label: 'ประถม 6', levelId: 'elementary' },
+  { id: 'm1', label: 'มัธยม 1', levelId: 'lower-secondary' },
+  { id: 'm2', label: 'มัธยม 2', levelId: 'lower-secondary' },
+  { id: 'm3', label: 'มัธยม 3', levelId: 'lower-secondary' },
+  { id: 'm4', label: 'มัธยม 4', levelId: 'upper-secondary' },
+  { id: 'm5', label: 'มัธยม 5', levelId: 'upper-secondary' },
+  { id: 'm6', label: 'มัธยม 6', levelId: 'upper-secondary' },
+] as const;
+
 export type SchoolLevelId = (typeof schoolReturnLevels)[number]['id'];
+export type SchoolGradeId = (typeof schoolReturnGrades)[number]['id'];
 export type SchoolJurisdictionId = (typeof schoolReturnJurisdictions)[number]['id'];
 export type SchoolKindId = (typeof schoolReturnKinds)[number]['id'];
 
 export interface LevelCounts {
-  classrooms: number | null;
   teachersMale: number | null;
   teachersFemale: number | null;
+}
+
+export interface GradeCounts {
+  classrooms: number | null;
   studentsMale: number | null;
   studentsFemale: number | null;
 }
@@ -38,6 +61,7 @@ export interface SchoolReturn {
   kind: SchoolKindId;
   academicYearBE: number;
   levels: Record<SchoolLevelId, LevelCounts>;
+  grades: Record<SchoolGradeId, GradeCounts>;
   previousStudents: number | null;
   previousTeachers: number | null;
   dropoutStudents: number | null;
@@ -52,12 +76,19 @@ export interface SchoolReturn {
 }
 
 const emptyLevel = (): LevelCounts => ({
-  classrooms: null,
   teachersMale: null,
   teachersFemale: null,
+});
+
+const emptyGrade = (): GradeCounts => ({
+  classrooms: null,
   studentsMale: null,
   studentsFemale: null,
 });
+
+function gradeMap(): Record<SchoolGradeId, GradeCounts> {
+  return Object.fromEntries(schoolReturnGrades.map((grade) => [grade.id, emptyGrade()])) as Record<SchoolGradeId, GradeCounts>;
+}
 
 export function createSchoolReturn(id = ''): SchoolReturn {
   return {
@@ -73,6 +104,7 @@ export function createSchoolReturn(id = ''): SchoolReturn {
       'lower-secondary': emptyLevel(),
       'upper-secondary': emptyLevel(),
     },
+    grades: gradeMap(),
     previousStudents: null,
     previousTeachers: null,
     dropoutStudents: null,
@@ -127,25 +159,33 @@ export interface SchoolReturnSummary {
   postsecondaryStudents: number | null;
   completionRate: number | null;
   levelRows: Array<{ id: SchoolLevelId; label: string; classrooms: number | null; teachers: number | null; students: number | null; studentsPerClassroom: number | null; studentsPerTeacher: number | null }>;
+  gradeRows: Array<{ id: SchoolGradeId; label: string; levelId: SchoolLevelId; classrooms: number | null; students: number | null }>;
+}
+
+export function gradesForLevel(levelId: SchoolLevelId) {
+  return schoolReturnGrades.filter((grade) => grade.levelId === levelId);
 }
 
 export function summarizeSchoolReturn(record: SchoolReturn): SchoolReturnSummary {
   const levelRows = schoolReturnLevels.map((level) => {
-    const counts = record.levels[level.id];
-    const teachers = add([counts.teachersMale, counts.teachersFemale]);
-    const students = add([counts.studentsMale, counts.studentsFemale]);
+    const grades = gradesForLevel(level.id);
+    const classrooms = add(grades.map((grade) => record.grades[grade.id].classrooms));
+    const studentsMale = add(grades.map((grade) => record.grades[grade.id].studentsMale));
+    const studentsFemale = add(grades.map((grade) => record.grades[grade.id].studentsFemale));
+    const students = add([studentsMale, studentsFemale]);
+    const teachers = add([record.levels[level.id].teachersMale, record.levels[level.id].teachersFemale]);
     return {
       id: level.id,
       label: level.label,
-      classrooms: counts.classrooms,
+      classrooms,
       teachers,
       students,
-      studentsPerClassroom: ratio(students, counts.classrooms),
+      studentsPerClassroom: ratio(students, classrooms),
       studentsPerTeacher: ratio(students, teachers),
     };
   });
-  const basicStudentsMale = add(schoolReturnLevels.map((level) => record.levels[level.id].studentsMale));
-  const basicStudentsFemale = add(schoolReturnLevels.map((level) => record.levels[level.id].studentsFemale));
+  const basicStudentsMale = add(schoolReturnGrades.map((grade) => record.grades[grade.id].studentsMale));
+  const basicStudentsFemale = add(schoolReturnGrades.map((grade) => record.grades[grade.id].studentsFemale));
   const students = record.kind === 'basic' ? add([basicStudentsMale, basicStudentsFemale]) : record.kind === 'postsecondary' ? add([record.postsecondaryMale, record.postsecondaryFemale]) : null;
   const studentsMale = record.kind === 'basic' ? basicStudentsMale : record.kind === 'postsecondary' ? record.postsecondaryMale : null;
   const studentsFemale = record.kind === 'basic' ? basicStudentsFemale : record.kind === 'postsecondary' ? record.postsecondaryFemale : null;
@@ -169,6 +209,49 @@ export function summarizeSchoolReturn(record: SchoolReturn): SchoolReturnSummary
     postsecondaryStudents: record.kind === 'postsecondary' ? students : null,
     completionRate: record.kind === 'lifelong' ? ratio(record.completed, record.registered) : null,
     levelRows,
+    gradeRows: schoolReturnGrades.map((grade) => {
+      const counts = record.grades[grade.id];
+      return {
+        id: grade.id,
+        label: grade.label,
+        levelId: grade.levelId,
+        classrooms: counts.classrooms,
+        students: add([counts.studentsMale, counts.studentsFemale]),
+      };
+    }),
+  };
+}
+
+export function normalizeSchoolReturn(value: Partial<SchoolReturn> | null | undefined): SchoolReturn {
+  const base = createSchoolReturn(typeof value?.id === 'string' ? value.id : '');
+  if (!value) return base;
+  const levels = { ...base.levels };
+  for (const level of schoolReturnLevels) {
+    const incoming = value.levels?.[level.id];
+    if (!incoming) continue;
+    levels[level.id] = {
+      teachersMale: incoming.teachersMale ?? null,
+      teachersFemale: incoming.teachersFemale ?? null,
+    };
+  }
+  const grades = gradeMap();
+  for (const grade of schoolReturnGrades) {
+    const incoming = value.grades?.[grade.id];
+    if (!incoming) continue;
+    grades[grade.id] = {
+      classrooms: incoming.classrooms ?? null,
+      studentsMale: incoming.studentsMale ?? null,
+      studentsFemale: incoming.studentsFemale ?? null,
+    };
+  }
+  return {
+    ...base,
+    ...value,
+    jurisdiction: schoolReturnJurisdictions.some((item) => item.id === value.jurisdiction) ? value.jurisdiction! : base.jurisdiction,
+    kind: schoolReturnKinds.some((item) => item.id === value.kind) ? value.kind! : base.kind,
+    academicYearBE: value.academicYearBE ?? base.academicYearBE,
+    levels,
+    grades,
   };
 }
 

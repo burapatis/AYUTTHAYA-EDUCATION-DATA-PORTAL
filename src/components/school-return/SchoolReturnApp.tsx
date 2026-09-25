@@ -4,11 +4,14 @@ import {
   formatCount,
   formatPercent,
   formatRatio,
+  gradesForLevel,
+  normalizeSchoolReturn,
   parseCount,
   schoolReturnJurisdictions,
   schoolReturnKinds,
   schoolReturnLevels,
   summarizeSchoolReturn,
+  type SchoolGradeId,
   type SchoolKindId,
   type SchoolJurisdictionId,
   type SchoolLevelId,
@@ -25,8 +28,8 @@ function loadRecords(): SchoolReturn[] {
   try {
     const raw = localStorage.getItem(storageKey);
     if (!raw) return [];
-    const parsed = JSON.parse(raw) as SchoolReturn[];
-    return Array.isArray(parsed) ? parsed : [];
+    const parsed = JSON.parse(raw) as Array<Partial<SchoolReturn>>;
+    return Array.isArray(parsed) ? parsed.map((item) => normalizeSchoolReturn(item)) : [];
   } catch {
     return [];
   }
@@ -62,6 +65,14 @@ export default function SchoolReturnApp({ districts }: Props) {
     setDraft((current) => ({
       ...current,
       levels: { ...current.levels, [levelId]: { ...current.levels[levelId], [key]: parseCount(value) } },
+    }));
+    setNotice('');
+  }
+
+  function updateGrade(gradeId: SchoolGradeId, key: keyof SchoolReturn['grades'][SchoolGradeId], value: string) {
+    setDraft((current) => ({
+      ...current,
+      grades: { ...current.grades, [gradeId]: { ...current.grades[gradeId], [key]: parseCount(value) } },
     }));
     setNotice('');
   }
@@ -147,27 +158,45 @@ export default function SchoolReturnApp({ districts }: Props) {
 
           {draft.kind === 'basic' && (
             <fieldset>
-              <legend>ขั้นพื้นฐาน แยกตามระดับ</legend>
-              <p>กรอกเฉพาะระดับที่สถานศึกษาจัด ช่องว่างหมายถึงยังไม่รายงาน ไม่ใช่ศูนย์</p>
+              <legend>ขั้นพื้นฐาน แยกตามชั้นเรียน</legend>
+              <p>กรอกห้องเรียนและนักเรียนทีละชั้น เว็บไซต์รวมเป็นก่อนประถม ประถม มัธยมต้น และมัธยมปลายให้เอง ชั้นที่ไม่ได้เปิดสอนเว้นว่างได้ ว่างหมายถึงยังไม่รายงาน ไม่ใช่ศูนย์ ครูกรอกครั้งเดียวที่แต่ละระดับ เพื่อไม่ให้นับคนซ้ำ</p>
               <div className="school-return__table-wrap">
                 <table>
                   <thead>
                     <tr>
-                      <th>ระดับ</th><th>ห้องเรียน</th><th>ครูชาย</th><th>ครูหญิง</th><th>นักเรียนชาย</th><th>นักเรียนหญิง</th>
+                      <th>ชั้น</th><th>ห้องเรียน</th><th>นักเรียนชาย</th><th>นักเรียนหญิง</th>
                     </tr>
                   </thead>
+                  {schoolReturnLevels.map((level) => (
+                    <tbody key={level.id}>
+                      <tr className="school-return__group"><th colSpan={4} scope="colgroup">{level.label}</th></tr>
+                      {gradesForLevel(level.id).map((grade) => {
+                        const counts = draft.grades[grade.id];
+                        return (
+                          <tr key={grade.id}>
+                            <th scope="row">{grade.label}</th>
+                            {(['classrooms', 'studentsMale', 'studentsFemale'] as const).map((key) => (
+                              <td key={key}><input aria-label={`${grade.label} ${key}`} inputMode="numeric" value={countField(counts[key])} onChange={(event) => updateGrade(grade.id, key, event.target.value)} /></td>
+                            ))}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  ))}
+                </table>
+              </div>
+              <div className="school-return__table-wrap">
+                <table>
+                  <caption>ครู กรอกครั้งเดียวต่อระดับ</caption>
+                  <thead><tr><th>ระดับ</th><th>ครูชาย</th><th>ครูหญิง</th></tr></thead>
                   <tbody>
-                    {schoolReturnLevels.map((level) => {
-                      const counts = draft.levels[level.id];
-                      return (
-                        <tr key={level.id}>
-                          <th scope="row">{level.label}</th>
-                          {(['classrooms', 'teachersMale', 'teachersFemale', 'studentsMale', 'studentsFemale'] as const).map((key) => (
-                            <td key={key}><input aria-label={`${level.label} ${key}`} inputMode="numeric" value={countField(counts[key])} onChange={(event) => updateLevel(level.id, key, event.target.value)} /></td>
-                          ))}
-                        </tr>
-                      );
-                    })}
+                    {schoolReturnLevels.map((level) => (
+                      <tr key={level.id}>
+                        <th scope="row">{level.label}</th>
+                        <td><input aria-label={`${level.label} ครูชาย`} inputMode="numeric" value={countField(draft.levels[level.id].teachersMale)} onChange={(event) => updateLevel(level.id, 'teachersMale', event.target.value)} /></td>
+                        <td><input aria-label={`${level.label} ครูหญิง`} inputMode="numeric" value={countField(draft.levels[level.id].teachersFemale)} onChange={(event) => updateLevel(level.id, 'teachersFemale', event.target.value)} /></td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -235,7 +264,7 @@ export default function SchoolReturnApp({ districts }: Props) {
           </dl>
           {draft.kind === 'basic' && (
             <table>
-              <caption>สรุปตามระดับที่กรอก</caption>
+              <caption>ระดับที่รวมจากชั้นเรียน</caption>
               <thead><tr><th>ระดับ</th><th>ห้อง</th><th>ครู</th><th>นักเรียน</th><th>ต่อห้อง</th><th>ต่อครู</th></tr></thead>
               <tbody>
                 {summary.levelRows.filter((row) => row.classrooms !== null || row.teachers !== null || row.students !== null).map((row) => (

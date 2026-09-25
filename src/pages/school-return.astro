@@ -93,7 +93,9 @@ import { districtRows } from '../data/fixtures';
   :global(.school-return th),
   :global(.school-return td) { padding: var(--space-2); border-bottom: 1px solid var(--color-border); text-align: right; }
   :global(.school-return th:first-child),
-  :global(.school-return td:first-child) { text-align: left; }
+  :global(.school-return td:first-child),
+  :global(.school-return__group th) { text-align: left; }
+  :global(.school-return__group th) { background: var(--color-slate-50); }
   :global(.school-return__actions) { display: flex; flex-wrap: wrap; gap: var(--space-3); }
   :global(.school-return__actions button) { padding: var(--space-3) var(--space-4); }
   :global(.school-return__actions button:nth-child(n + 2)) { background: var(--color-white); color: var(--color-navy-900); border: 1px solid var(--color-border-strong); }
